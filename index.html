@@ -1,32 +1,30 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>新版界面甲骨云AMD/ARM实例DD失败失联救援教程</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;color:#333;max-width:800px;margin:0 auto;padding:20px;background:#fff}
-    h1{font-size:1.8rem;margin:1.5rem 0 1rem;color:#1a1a1a;line-height:1.3}
-    h2{font-size:1.4rem;margin:1.8rem 0 1rem;color:#222;border-left:4px solid #ff5f33;padding-left:12px}
-    h3,h4,h5{font-size:1.2rem;margin:1.5rem 0 0.8rem;color:#333}
-    p{margin:0.8rem 0;text-align:justify}
-    ul,ol{margin:0.8rem 0;padding-left:2rem}
-    li{margin:0.4rem 0}
-    code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:0.95em}
-    pre{background:#f8f8f8;border-left:4px solid #ddd;padding:12px 16px;overflow-x:auto;margin:1rem 0;border-radius:0 4px 4px 0}
-    pre code{background:none;padding:0}
-    blockquote{border-left:4px solid #ff5f33;margin:1rem 0;padding:12px 16px;background:#fff9f7;color:#555}
-    .article-meta{color:#666;font-size:0.9rem;margin:0 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid #eee}
-    .article-meta span{margin-right:12px}
-    .article-content{font-size:1rem}
-    .article-content img{max-width:100%;height:auto;display:block;margin:1rem auto}
-    table{width:100%;border-collapse:collapse;margin:1rem 0}
-    th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}
-    th{background:#f9f9f9}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.7;color:#222;max-width:780px;margin:0 auto;padding:24px 16px;background:#fff}
+    h1{font-size:1.75rem;margin:1rem 0 0.5rem;color:#111;line-height:1.35}
+    .meta{color:#666;font-size:0.9rem;margin:0 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid #eee}
+    .meta span{margin-right:14px}
+    h2{font-size:1.35rem;margin:2rem 0 1rem;color:#1a1a1a;border-left:4px solid #ff5f33;padding-left:14px}
+    h3{font-size:1.15rem;margin:1.5rem 0 0.8rem;color:#333}
+    p{margin:0.7rem 0;text-align:justify}
+    strong{color:#111;font-weight:600}
+    ul,ol{margin:0.6rem 0;padding-left:1.8rem}
+    li{margin:0.35rem 0}
+    code{background:#f5f5f5;padding:2px 5px;border-radius:3px;font-family:Menlo,Monaco,Consolas,monospace;font-size:0.92em;color:#c7254e}
+    pre{background:#fafafa;border-left:4px solid #ff5f33;padding:14px 16px;overflow-x:auto;margin:1rem 0;border-radius:0 3px 3px 0;font-size:0.9rem;line-height:1.5}
+    pre code{background:none;padding:0;color:inherit}
+    blockquote{border-left:4px solid #ff5f33;margin:1rem 0;padding:12px 16px;background:#fffaf7;color:#444}
+    .note{background:#fffef0;border:1px dashed #ffc107;padding:12px 16px;margin:1rem 0;border-radius:4px;font-size:0.95rem}
     a{color:#ff5f33;text-decoration:none}
     a:hover{text-decoration:underline}
-    .highlight{background:#fffef0;border:1px dashed #ffcc00;padding:12px;margin:1rem 0;border-radius:4px}
+    .footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid #eee;color:#666;font-size:0.9rem}
+    @media(max-width:600px){h1{font-size:1.5rem}h2{font-size:1.25rem}pre{padding:12px 14px;font-size:0.85rem}}
   </style>
 </head>
 <body>
@@ -34,57 +32,61 @@
 <article>
   <header>
     <h1>新版界面甲骨云AMD/ARM实例DD失败失联救援教程</h1>
-    <div class="article-meta">
+    <div class="meta">
       <span>📅 2026-03-31</span>
-      <span>📁 <a href="#">域名主机</a></span>
+      <span>📁 域名主机</span>
     </div>
   </header>
 
-  <div class="article-content">
+  <div class="content">
     <p>在折腾甲骨文云（Oracle Cloud）时，DD 脚本失败导致实例失联、无法通过 ssh 链接你的服务器了（变砖）是常有的事。由于甲骨文后台界面经常更新，很多旧教程已经失效。本教程针对新版控制台界面，总结了两种最主流、最高效的救援方法。</p>
 
     <h2>方法一：官方重装法（替换引导卷 + 元数据初始化）</h2>
     <p><strong>适用场景</strong>：引导卷容量小于 200GB，且希望在不删除实例的情况下，快速恢复一个纯净的官方系统。<br>
     <strong>优点</strong>：流程简单，无需操作其他救援实例，支持直接通过"元数据"设置 root 密码。</p>
     <p>此教程是通过官方提供的更换引导卷来实现重装系统的目的。</p>
-    <p>1、导航至甲骨文实例列表页面，在这里选择你需要重装系统的实例，点击进入该实例的详情页</p>
+    <p>1、导航至甲骨文实例列表页面，在这里选择你需要重装系统的实例，点击进入到该实例的详情页</p>
     <p>2、进入甲骨文实例详情页进行重装系统，这里有两种方式都可以到达重装系统的界面：</p>
     <p>2.1、在甲骨文实例详情页顶端选项栏，选择【更多操作】-【替换引导卷】</p>
-    <p>2.2、在甲骨文实例详情页下方拉到列表，选择【引导卷】-【替换引导卷】</p>
-    <p>3、点击【<strong>替换引导卷</strong>】后，在弹出的页面中，选择【<strong>映像</strong>】、【<strong>输入OCID</strong>】，并在下方【<strong>输入映像OCID</strong>】处填入OCID。</p>
+    <p>2.2、在甲骨文实例详情页下拉到下方列表，选择【引导卷】-【替换引导卷】</p>
+    <p>3、点击【替换引导卷】后，在弹出的页面中，选择【映像】、【输入OCID】，并在下方【输入映像OCID】处填入OCID。</p>
     <p><strong>这里需要注意的是</strong>：</p>
     <ul>
-    <li><strong>保留引导卷</strong>：开启这个功能后，将保留当前引导卷，以后随后所需时使用；如果没有这个需求，就不要开启这个功能。</li>
-    <li><strong>映像OCID</strong>：可以通过甲骨文实例详情页下方列表，点击【<strong>引导卷</strong>】中对应的【<strong>映像</strong>】后，就能查看到OCID，复制后粘贴到上方即可。</li>
+      <li><strong>保留引导卷</strong>：开启这个功能后，将保留当前引导卷，以后随后所需时使用；如果没有这个需求，就不要开启这个功能。</li>
+      <li><strong>映像OCID</strong>：可以通过甲骨文实例详情页下方列表，点击【引导卷】中对应的【映像】后，就能查看到OCID，复制后粘贴到上方即可。</li>
     </ul>
     <p><strong>引导卷大小</strong>：默认为47G，可以保持默认，后续根据需要再进行扩展。当然，也可以根据自己的使用情况在此处直接输入大小。</p>
+    
     <blockquote>
-    <p>免费用户包含替换引导卷总量不得超过200G，超出后替换时就会提示<code>bootVolumeQuota Service limit reached.</code>，导致无法成功替换；意思是如果你开满了 免费的4 台，此方法就不适用。<br>
-    收费用户没有此限制，但替换后总量不超出200G就不会额外收费。</p></blockquote>
-    <ul>
-    <li>如果你还记得之前的密钥，则直接【<strong>保存</strong>】即可。如果你忘记了之前的密钥或是想更换新的密钥或密码。在【<strong>替换引导卷</strong>】中点击页面下方的【<strong>高级选项</strong>】，点击【<strong>元数据</strong>】,在【<strong>名称</strong>】处输入<code>user_data</code>，【<strong>值</strong>】处输入新的 <strong>公钥</strong>，或是下面脚本的base64加密值（base64加密方法可在线搜索"在线base64加密"任选一个进行在线加密即可）</li>
-    </ul>
+      免费用户包含替换引导卷总量不得超过200G，超出后替换时就会提示<code>bootVolumeQuota Service limit reached.</code>，导致无法成功替换；意思是如果你开满了 免费的4 台，此方法就不适用。<br>
+      收费用户没有此限制，但替换后总量不超出200G就不会额外收费。
+    </blockquote>
+    
+    <p>如果你还记得之前的秘钥，则直接【保存】即可。如果你忘记了之前的秘钥或是想更换新的秘钥或密码。在【替换引导卷】中点击页面下方的【高级选项】，点击【元数据】,在【名称】处输入<code>user_data</code>，【值】处输入新的 <strong>公钥</strong>，或是下面脚本的base64加密值（base64加密方法可在线搜索"在线base64加密"任选一个进行在线加密即可）</p>
+    
     <pre><code>#!/bin/bash 
 echo root:此处改为你的密码 | chpasswd root 
 sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config 
 sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config 
 rm -rf /etc/ssh/sshd_config.d/* &amp;&amp; rm -rf /etc/ssh/ssh_config.d/* 
 /etc/init.d/ssh* restart</code></pre>
-    <p>4、在上方的替换引导卷页面填写完毕并点击【<strong>保存</strong>】后，该实例的引导卷将经历一个 <strong>正在分离</strong> – <strong>已分离</strong> – <strong>正在附加</strong> – <strong>已附加</strong> 的过程，持续时间大概3-5分钟。</p>
-    <p>至此，通过替换引导卷就完成了<strong>甲骨文云重装系统</strong>的操作。</p>
-    <p>最后，如果你前面选择了【<strong>保留引导卷</strong>】，之后想替换回之前的引导卷时，只需在【<strong>替换引导卷</strong>】页面，选择【引导卷】、【从列表中选择】，然后在下方列表里选择之前的引导卷后，点击【保存】即可。</p>
+    
+    <p>4、在上方的替换引导卷页面填写完毕并点击【保存】后，该实例的引导卷将经历一个 <strong>正在分离</strong> – <strong>已分离</strong> – <strong>正在附加</strong> – <strong>已附加</strong> 的过程，持续时间大概3-5分钟。</p>
+    <p>至此，通过替换引导卷就完成了甲骨文云重装系统的操作。</p>
+    <p>最后，如果你前面选择了【保留引导卷】，之后想替换回之前的引导卷时，只需在【替换引导卷】页面，选择【引导卷】、【从列表中选择】，然后在下方列表里选择之前的引导卷后，点击【保存】即可。</p>
+    
     <p><strong>文末附上甲骨文云官方支持文档中关于替换引导券的说明：</strong></p>
     
-    <h5>更换启动卷</h5>
+    <h3>更换启动卷</h3>
     <p>您可以自动替换实例的启动卷，而无需终止并重新创建实例。实例停止，替换启动卷，并将实例返回到卷替换过程之前的状态。如果检测到问题或需要升级以实现新功能，此功能允许更换引导卷。</p>
     
-    <h5>引导卷替换要求和选项</h5>
+    <h3>引导卷替换要求和选项</h3>
     <p>以下是使用启动卷替换的关键操作系统和映像要求：</p>
     <ul>
-    <li>仅支持 Linux 操作系统和映像。</li>
-    <li>不支持 Windows 和市场图像。</li>
-    <li>引导卷只能替换为使用相同 Linux 发行版的块卷和映像。例如，您无法从 Oracle Linux 切换到 Ubuntu，反之亦然。</li>
-    <li>映像限制适用于与映像以及实例上当前内容关联的启动选项。例如，如果映像的启动卷附件类型与实例启动选项不匹配，则该映像将被视为无效。</li>
+      <li>仅支持 Linux 操作系统和映像。</li>
+      <li>不支持 Windows 和市场图像。</li>
+      <li>引导卷只能替换为使用相同 Linux 发行版的块卷和映像。例如，您无法从 Oracle Linux 切换到 Ubuntu，反之亦然。</li>
+      <li>映像限制适用于与映像以及实例上当前内容关联的启动选项。例如，如果映像的启动卷附件类型与实例启动选项不匹配，则该映像将被视为无效。</li>
     </ul>
 
     <h2>方案二、分离硬盘，挂载到其他实例重新安装系统</h2>
@@ -96,80 +98,97 @@ rm -rf /etc/ssh/sshd_config.d/* &amp;&amp; rm -rf /etc/ssh/ssh_config.d/*
     <p>新版本甲骨文云界面，要先去找到这个硬盘，然后附加到你的其他机器上，而不是找到其他应用实例的机器附加硬盘。，存储——&gt;块存储卷——&gt;引导卷——&gt;附加到实例</p>
     <p>挂载的方式选择半虚拟化，这个更简单。</p>
     <p>SSH连接刚刚了挂载失联硬盘的实例。使用 <code>lsblk</code> 或 <code>fdisk -l</code> 命令，你就可以查看到附加的ARM引导卷，一般是 <code>/dev/sdb</code> （具体盘符请自行查看）。</p>
-    <p>5、接下来就下载DD救援包。如果自己没有备份救援包的话，这里提供2个ARM救援包和2个AMD救援包给大家使用（大家也可以自行备份自己手上现有的AMD或ARM机型，制作救援包。方法见文末）：</p>
-    <p><strong>ARM</strong>镜像Debian10 ，DD 过程应小于 12 分钟。用户名root/密码10086.fit</p>
-    <pre><code>cd /root &amp;&amp; wget -cO debian.sdb.gz https://github.com/MIKU-N/OracleBackup/raw/main/dabian.sdb.gz?download=</code></pre>
-    <pre><code>gzip -dc /root/debian.sdb.gz | dd of=/dev/sdb</code></pre>
+    
+    <p>5、接下来就下载DD救援包。如果自己没有备份救援包的话，这里提供2个ARM救援包和2个AMD救援包供大家使用（大家也可以自行备份自己手上现有的AMD或ARM机型，制作救援包。方法见文末）：</p>
+    
+    <p><strong>ARM镜像Debian10</strong>，DD 过程应小于 12 分钟。用户名root/密码10086.fit</p>
+    <pre><code>cd /root &amp;&amp; wget -cO debian.sdb.gz https://github.com/MIKU-N/OracleBackup/raw/main/dabian.sdb.gz?download=
+gzip -dc /root/debian.sdb.gz | dd of=/dev/sdb</code></pre>
+    
     <p><strong>Ubuntu 20.04 ARM 官方原版完整救援包</strong>（恢复数据约46G，耗时约1个多小时）</p>
     <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.arm.img.gz</code></pre>
     <p>用户名:<code>root</code>, 密码:<code>CNBoy.org</code>。或下载下方秘钥，载入SSH工具，无密码登录</p>
     <pre><code>https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/backup</code></pre>
+    
     <p><strong>Ubuntu 20.04 AMD 官方原版完整救援包</strong>（恢复数据约46G，耗时约1个多小时）</p>
     <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.amd.img.gz</code></pre>
     <p>用户名:<code>root</code>, 密码:<code>CNBoy.org</code>。或下载下方秘钥，载入SSH工具，无密码登录</p>
-    <p>debian10 ARM 网络精简救援包（恢复数据约3G，耗时约10多分钟）</p>
+    
+    <p><strong>debian10 ARM 网络精简救援包</strong>（恢复数据约3G，耗时约10多分钟）</p>
     <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/dabian10.arm.img.gz</code></pre>
     <p>用户名：<code>root</code>, 密码：<code>10086.fit</code></p>
+    
     <p>6、恢复镜像到 <code>/dev/sdb</code> 分区（如果你的引导卷加载路径不同，请自行修改路径）</p>
-    <pre><code>说明：为了防止你在SSH连接在恢复数据中途失败，建议使用 srceen 后台窗口运行以下命令
+    
+    <div class="note">
+      <strong>说明</strong>：为了防止你在SSH连接在恢复数据中途中断导致失败，建议使用 screen 后台窗口运行以下命令
+    </div>
+    <pre><code>gzip -dc '救援包完整路径' | dd of='引导卷加载路径'</code></pre>
+    <p><strong>例</strong>：</p>
+    <pre><code># 使用 Ubuntu 20.04 ARM 官方原版完整救援包
+gzip -dc /root/Ubuntu20.04.arm.img.gz | dd of=/dev/sdb
 
-gzip -dc '救援包完整路径' | dd of='引导卷加载路径' 
-例： 
-使用 Ubuntu 20.04 ARM 官方原版完整救援包，命令如下：
-gzip -dc /root/Ubuntu20.04.arm.img.gz | dd of=/dev/sdb 
-使用 Ubuntu 20.04 AMD 官方原版完整救援包，命令如下：
-gzip -dc /root/Ubuntu20.04.amd.img.gz | dd of=/dev/sdb 
-使用 debian10 ARM 网络精简救援包，命令如下：
+# 使用 Ubuntu 20.04 AMD 官方原版完整救援包
+gzip -dc /root/Ubuntu20.04.amd.img.gz | dd of=/dev/sdb
+
+# 使用 debian10 ARM 网络精简救援包
 gzip -dc /root/dabian10.arm.img.gz | dd of=/dev/sdb</code></pre>
+    
     <p>7、恢复过程中你可以新开一个SSH窗口，然后运行以下命令后不要关闭，切换回恢复命令的窗口查看进度</p>
     <pre><code>watch -n 5 pkill -USR1 ^dd$</code></pre>
-    <p>8. 等待镜像恢复完成后，到甲骨文后台，在刚才挂载了硬盘的实例中卸载掉刚刚附加的块存储卷，并至要修复的实例中挂载回这个引导卷。然后启动实例。SSH连接，你就会发现你的失联机器又复活了！</p>
+    
+    <p>8. 等待镜像恢复完成后，到甲骨文后台，在刚才挂载了硬盘的实例中卸载掉刚刚附加的块储存卷，并至要修复的实例中挂载回这个引导卷。然后启动实例。SSH连接，你就会发现你的失联机器又复活了！</p>
     <p>如卡Grub则需要格式化引导盘后再dd</p>
-    <p>升级我直接使用了另一个dd脚本, 默认密码是 LeitboGi0ro</p>
+    
+    <p><strong>升级脚本</strong>（默认密码 LeitboGi0ro）：</p>
     <pre><code>wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' &amp;&amp; chmod a+x InstallNET.sh
 bash InstallNET.sh -debian 12 -pwd 'jiemahao'</code></pre>
     
-    <div class="highlight">
-    <p>挂载折腾坏了的实例的引导卷到同账号其他甲骨文实例。执行 lsblk 看看挂载的卷设备名，一般是 sdb,</p>
-    <p>1.1 救砖甲骨文 AMD 执行</p>
-    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
-    <p>如果需要 Debian 12 系统，则执行</p>
-    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
-    <p>1.2 救砖 甲骨文 ARM 执行</p>
-    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
-    <p>如果需要 Debian 12 系统，则执行</p>
-    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
-    <p>DD 过程大约 25 分钟。</p>
-    <p>2. 完成后分离卷挂载回原实例。启动实例。</p>
-    <p>3.点击"控制台连接"下级菜单的 启动"Cloud Shell 连接"。<br>
-    强制重启实例。<br>
-    看到实例启动后，使用用户名 root 密码空白登录实例。<br>
-    用命令 passwd 设置 root 密码。<br>
-    apt update #更新系统<br>
-    apt install ssh -y #安装 ssh</p>
-    <p>编辑 ssh 配置文件</p>
-    <pre><code>nano /etc/ssh/sshd_config</code></pre>
-    <p>添加 (或者修改原文件内的配置字段中的) 2 行</p>
-    <table>
-    <tbody>
-    <tr><td>PermitRootLogin yes</td></tr>
-    <tr><td>PasswordAuthentication yes</td></tr>
-    </tbody>
-    </table>
-    <p>生成主机密钥</p>
-    <pre><code>ssh-keygen -A</code></pre>
-    <p>启用 ssh 服务</p>
-    <pre><code>systemctl start sshd</code></pre>
-    <p>至此服务器已经可以远程 ssh 登录</p>
+    <div class="note">
+      <p>挂载折腾坏了的实例的引导卷到同账号其他甲骨文实例。执行 <code>lsblk</code> 看看挂载的卷设备名，一般是 sdb,</p>
+      
+      <p><strong>1.1 救砖甲骨文 AMD 执行</strong></p>
+      <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+      <p>如果需要 Debian 12 系统，则执行</p>
+      <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+      
+      <p><strong>1.2 救砖 甲骨文 ARM 执行</strong></p>
+      <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+      <p>如果需要 Debian 12 系统，则执行</p>
+      <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+      <p>DD 过程大约 25 分钟。</p>
+      
+      <p><strong>2.</strong> 完成后分离卷挂载回原实例。启动实例。</p>
+      
+      <p><strong>3.</strong> 点击"控制台连接"下级菜单的 启动"Cloud Shell 连接"。<br>
+      强制重启实例。<br>
+      看到实例启动后，使用用户名 root 密码空登录实例。<br>
+      用命令 <code>passwd</code> 设置 root 密码。<br>
+      <code>apt update</code> #更新系统<br>
+      <code>apt install ssh -y</code> #安装 ssh</p>
+      
+      <p><strong>编辑 ssh 配置文件</strong></p>
+      <pre><code>nano /etc/ssh/sshd_config</code></pre>
+      <p>添加 (或者修改原文件内的配置字段中的) 2 行</p>
+      <pre><code>PermitRootLogin yes
+PasswordAuthentication yes</code></pre>
+      
+      <p><strong>生成主机密钥</strong></p>
+      <pre><code>ssh-keygen -A</code></pre>
+      
+      <p><strong>启用 ssh 服务</strong></p>
+      <pre><code>systemctl start sshd</code></pre>
+      <p>至此服务器已经可以远程 ssh 登录</p>
     </div>
 
     <h2>自己制作 dd 包</h2>
     <p>把想要作为镜像的 arm 引导盘挂载到一个备用机（建议配置高点，速度快）</p>
-    <p>备用机执行 dd if=/dev/sdb | gzip &gt; /root/ubuntu.img.gz 生成的压缩包在/root 目录下，时间很长需要等待</p>
-    <p>dd 恢复命令 gzip -dc /root/ubuntu.img.gz | dd of=/dev/sdb</p>
-    </div>
+    <p>备用机执行 <code>dd if=/dev/sdb | gzip &gt; /root/ubuntu.img.gz</code> 生成的压缩包在<code>/root</code> 目录下，时间很长需要等待</p>
+    <p><strong>dd 恢复命令</strong></p>
+    <pre><code>gzip -dc /root/ubuntu.img.gz | dd of=/dev/sdb</code></pre>
+  </div>
 
-  <footer style="margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;color:#666;font-size:0.9rem">
+  <footer class="footer">
     <p>⚠️ 原文链接：<a href="https://jiemahao.com/oracle-cloud-recovery-guide/">https://jiemahao.com/oracle-cloud-recovery-guide/</a>，转载请注明出处。</p>
   </footer>
 </article>
