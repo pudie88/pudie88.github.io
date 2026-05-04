@@ -1,520 +1,178 @@
-
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-  <meta name="apple-mobile-web-app-title" content="接码号">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-    <title>新版界面甲骨云AMD/ARM实例DD失败失联救援教程 - 接码号</title>
-  <meta name="keywords" content="域名主机">
-  <meta name="description" content="在折腾甲骨文云（Oracle Cloud）时，DD 脚本失败导致实例失联、无法通过 ssh 链接你的服务器了（变砖）是常有的事。由于甲骨文后台界面经常更新，很多旧教程已经失效。本教程针对新版控制台界面，总结了两种最主流、最高效的救援方法...">
-    <link rel="shortcut icon" href="https://jiemahao.com/wp-content/uploads/2023/07/favicon.ico">
-  <meta name='robots' content='max-image-preview:large' />
-<style id='classic-theme-styles-inline-css' type='text/css'>
-/*! This file is auto-generated */
-.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
-</style>
-<link rel='stylesheet' id='modown-font-css' href='https://jiemahao.com/wp-content/themes/modown/static/css/fonts.css?ver=9.6' type='text/css' media='screen' />
-<link rel='stylesheet' id='modown-base-css' href='https://jiemahao.com/wp-content/themes/modown/static/css/base.css?ver=9.6' type='text/css' media='screen' />
-<link rel='stylesheet' id='modown-style-css' href='https://jiemahao.com/wp-content/themes/modown-child/style.css?ver=9.6' type='text/css' media='screen' />
-<script type="text/javascript" src="https://jiemahao.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
-<style id="erphpdown-custom"></style>
-  <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
-<script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
-<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
-<script>
-    window.ezstandalone = window.ezstandalone || {};
-    ezstandalone.cmd = ezstandalone.cmd || [];
-</script>  <script>var $ = jQuery;</script>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>新版界面甲骨云AMD/ARM实例DD失败失联救援教程</title>
   <style>
-  :root{--theme-color: #ff5f33;--theme-color2: #ff5f33;--theme-radius: 300;}    @media (max-width: 620px){
-      .grids .grid .img, .single-related .grids .grid .img {height: auto !important;}
-    }
-      .banner{margin-top: -70px;}
-    .banner-slider{padding-top: 90px;}
-        .banner-slider:after{content: none;}
-    body.home .header{background: transparent;box-shadow: none;webkit-box-shadow:none;}
-    body.home .header.scrolled{background: #fff;webkit-box-shadow: 0px 5px 10px 0px rgba(17, 58, 93, 0.1);-ms-box-shadow: 0px 5px 10px 0px rgba(17, 58, 93, 0.1);box-shadow: 0px 5px 10px 0px rgba(17, 58, 93, 0.1);}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;color:#333;max-width:800px;margin:0 auto;padding:20px;background:#fff}
+    h1{font-size:1.8rem;margin:1.5rem 0 1rem;color:#1a1a1a;line-height:1.3}
+    h2{font-size:1.4rem;margin:1.8rem 0 1rem;color:#222;border-left:4px solid #ff5f33;padding-left:12px}
+    h3,h4,h5{font-size:1.2rem;margin:1.5rem 0 0.8rem;color:#333}
+    p{margin:0.8rem 0;text-align:justify}
+    ul,ol{margin:0.8rem 0;padding-left:2rem}
+    li{margin:0.4rem 0}
+    code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:0.95em}
+    pre{background:#f8f8f8;border-left:4px solid #ddd;padding:12px 16px;overflow-x:auto;margin:1rem 0;border-radius:0 4px 4px 0}
+    pre code{background:none;padding:0}
+    blockquote{border-left:4px solid #ff5f33;margin:1rem 0;padding:12px 16px;background:#fff9f7;color:#555}
+    .article-meta{color:#666;font-size:0.9rem;margin:0 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid #eee}
+    .article-meta span{margin-right:12px}
+    .article-content{font-size:1rem}
+    .article-content img{max-width:100%;height:auto;display:block;margin:1rem auto}
+    table{width:100%;border-collapse:collapse;margin:1rem 0}
+    th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}
+    th{background:#f9f9f9}
+    a{color:#ff5f33;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .highlight{background:#fffef0;border:1px dashed #ffcc00;padding:12px;margin:1rem 0;border-radius:4px}
+  </style>
+</head>
+<body>
 
-    body.home .header:not(.scrolled) .nav-main > li, body.home .header:not(.scrolled) .nav-main > li > a, body.home .header:not(.scrolled) .nav-right > li > a, body.home .header:not(.scrolled) .nav-left > li > a{color:#ffffff;}
-    body.home .header:not(.scrolled) .nav-line{background: #ffffff}
-    body.home.night .header:not(.scrolled) .nav-main > li, body.home.night .header:not(.scrolled) .nav-main > li > a, body.home.night .header:not(.scrolled) .nav-right > li > a, body.home.night .header:not(.scrolled) .nav-left > li > a{color:#fff;}
-    body.home .nav-main li.menu-item-has-children:after{color:#fff;}
-    body.home .header.scrolled .nav-main li.menu-item-has-children:after{color:#333;}
-    body.home.night .nav-main li.menu-item-has-children:after{color:#fff;}
-    body.home.night .header.scrolled .nav-main li.menu-item-has-children:after{color:#bbb;}
-
-    @media (max-width: 925px){
-      .banner-slider{padding-top: 85px;}
-          }
-
-    @media (max-width: 768px){
-      .banner{margin-top: -60px;}
-      .banner-slider{padding-top: 70px;}
-          }
-      .banner:after, body.home .swiper-container-fullwidth .swiper-slide:after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(0,0,0,.38) 0,rgba(0,0,0,.38) 3.5%,rgba(0,0,0,.379) 7%,rgba(0,0,0,.377) 10.35%,rgba(0,0,0,.375) 13.85%,rgba(0,0,0,.372) 17.35%,rgba(0,0,0,.369) 20.85%,rgba(0,0,0,.366) 24.35%,rgba(0,0,0,.364) 27.85%,rgba(0,0,0,.361) 31.35%,rgba(0,0,0,.358) 34.85%,rgba(0,0,0,.355) 38.35%,rgba(0,0,0,.353) 41.85%,rgba(0,0,0,.351) 45.35%,rgba(0,0,0,.35) 48.85%,rgba(0,0,0,.353) 52.35%,rgba(0,0,0,.36) 55.85%,rgba(0,0,0,.371) 59.35%,rgba(0,0,0,.385) 62.85%,rgba(0,0,0,.402) 66.35%,rgba(0,0,0,.42) 69.85%,rgba(0,0,0,.44) 73.35%,rgba(0,0,0,.46) 76.85%,rgba(0,0,0,.48) 80.35%,rgba(0,0,0,.498) 83.85%,rgba(0,0,0,.515) 87.35%,rgba(0,0,0,.529) 90.85%,rgba(0,0,0,.54) 94.35%,rgba(0,0,0,.547) 97.85%,rgba(0,0,0,.55));z-index:9}
-      .widget-erphpdown .vip, .erphpdown-box .vip, .grids .grid > .vip-tag, .nav-right .nav-vip{display: none;}
-      .grids .grid h3 a{height: 40px;-webkit-line-clamp:2;}
-    .grids .audio .title{line-height: 25px;}
-      .mocats .moli ul li{padding-right: 0}
-    .mocats .moli ul span{display:none !important;}
-      .grid > .recommend-tag, .list > .recommend-tag{background: #ffffff !important;}
-    .grid > .recommend-tag:before, .list > .recommend-tag:before{border-color: transparent transparent #ffffff transparent !important;}
-      .erphpdown-box, .erphpdown, .article-content .erphpdown-content-vip{background: transparent !important;border: 2px dashed var(--theme-color);}
-    .erphpdown-box .erphpdown-title{display: inline-block;}
-  .logo a img{width:70px;height:auto;max-height:100%}@media (max-width: 1024px){.logo a img{width:60px;height:auto;max-height:100%}}.nav-right .nav-search{padding-right: 0}@media (max-width: 768px){.nav-right .nav-search{padding-right: 6px}}.footer-widget{width:calc(21% - 20px);}@media (max-width: 768px){.footer-widget{width:calc(50% - 20px);margin-bottom:25px}
-  .footer-widget:first-child{width:calc(100% - 20px);padding-right: 0}
-  .footer-widget:last-child{width:calc(100% - 20px);padding-left: 0;margin-bottom: 0}}@media (max-width: 768px){.nav-right .nav-vip{display: none;}.footer-widgets{display: none;}}@media (max-width:480px){}</style></head>
-<body class="post-template-default single single-post postid-650 single-format-standard">
-<header class="header">
-  <div class="container clearfix">
-
-    
-        <div class="logo">
-      <a href="https://jiemahao.com" title="接码号"><img src="https://jiemahao.com/wp-content/uploads/2023/07/logo.svg" data-light="https://jiemahao.com/wp-content/uploads/2023/07/logo.svg" data-dark="https://jiemahao.com/wp-content/uploads/2023/07/logo.svg" alt="接码号" /></a>
+<article>
+  <header>
+    <h1>新版界面甲骨云AMD/ARM实例DD失败失联救援教程</h1>
+    <div class="article-meta">
+      <span>📅 2026-03-31</span>
+      <span>📁 <a href="#">域名主机</a></span>
     </div>
+  </header>
 
-    <ul class="nav-main">
-      <li id="menu-item-346" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-346"><a href="https://jiemahao.com/">首页</a></li>
-<li id="menu-item-443" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-443"><a href="https://jiemahao.com/us/">美国电话号码</a></li>
-<li id="menu-item-438" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-438"><a href="https://jiemahao.com/gb/">英国电话号码</a></li>
-<li id="menu-item-442" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-442"><a href="https://jiemahao.com/ca/">加拿大电话号码</a></li>
-<li id="menu-item-469" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-469"><a href="https://jiemahao.com/de/">德国电话号码</a></li>
-<li id="menu-item-444" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-444"><a href="https://jiemahao.com/th/">泰国电话号码</a></li>
-<li id="menu-item-441" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-441"><a href="https://jiemahao.com/my/">马来西亚电话号码</a></li>
-<li id="menu-item-439" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-439"><a href="https://jiemahao.com/ph/">菲律宾</a></li>
+  <div class="article-content">
+    <p>在折腾甲骨文云（Oracle Cloud）时，DD 脚本失败导致实例失联、无法通过 ssh 链接你的服务器了（变砖）是常有的事。由于甲骨文后台界面经常更新，很多旧教程已经失效。本教程针对新版控制台界面，总结了两种最主流、最高效的救援方法。</p>
+
+    <h2>方法一：官方重装法（替换引导卷 + 元数据初始化）</h2>
+    <p><strong>适用场景</strong>：引导卷容量小于 200GB，且希望在不删除实例的情况下，快速恢复一个纯净的官方系统。<br>
+    <strong>优点</strong>：流程简单，无需操作其他救援实例，支持直接通过"元数据"设置 root 密码。</p>
+    <p>此教程是通过官方提供的更换引导卷来实现重装系统的目的。</p>
+    <p>1、导航至甲骨文实例列表页面，在这里选择你需要重装系统的实例，点击进入该实例的详情页</p>
+    <p>2、进入甲骨文实例详情页进行重装系统，这里有两种方式都可以到达重装系统的界面：</p>
+    <p>2.1、在甲骨文实例详情页顶端选项栏，选择【更多操作】-【替换引导卷】</p>
+    <p>2.2、在甲骨文实例详情页下方拉到列表，选择【引导卷】-【替换引导卷】</p>
+    <p>3、点击【<strong>替换引导卷</strong>】后，在弹出的页面中，选择【<strong>映像</strong>】、【<strong>输入OCID</strong>】，并在下方【<strong>输入映像OCID</strong>】处填入OCID。</p>
+    <p><strong>这里需要注意的是</strong>：</p>
+    <ul>
+    <li><strong>保留引导卷</strong>：开启这个功能后，将保留当前引导卷，以后随后所需时使用；如果没有这个需求，就不要开启这个功能。</li>
+    <li><strong>映像OCID</strong>：可以通过甲骨文实例详情页下方列表，点击【<strong>引导卷</strong>】中对应的【<strong>映像</strong>】后，就能查看到OCID，复制后粘贴到上方即可。</li>
+    </ul>
+    <p><strong>引导卷大小</strong>：默认为47G，可以保持默认，后续根据需要再进行扩展。当然，也可以根据自己的使用情况在此处直接输入大小。</p>
+    <blockquote>
+    <p>免费用户包含替换引导卷总量不得超过200G，超出后替换时就会提示<code>bootVolumeQuota Service limit reached.</code>，导致无法成功替换；意思是如果你开满了 免费的4 台，此方法就不适用。<br>
+    收费用户没有此限制，但替换后总量不超出200G就不会额外收费。</p></blockquote>
+    <ul>
+    <li>如果你还记得之前的密钥，则直接【<strong>保存</strong>】即可。如果你忘记了之前的密钥或是想更换新的密钥或密码。在【<strong>替换引导卷</strong>】中点击页面下方的【<strong>高级选项</strong>】，点击【<strong>元数据</strong>】,在【<strong>名称</strong>】处输入<code>user_data</code>，【<strong>值</strong>】处输入新的 <strong>公钥</strong>，或是下面脚本的base64加密值（base64加密方法可在线搜索"在线base64加密"任选一个进行在线加密即可）</li>
+    </ul>
+    <pre><code>#!/bin/bash 
+echo root:此处改为你的密码 | chpasswd root 
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config 
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config 
+rm -rf /etc/ssh/sshd_config.d/* &amp;&amp; rm -rf /etc/ssh/ssh_config.d/* 
+/etc/init.d/ssh* restart</code></pre>
+    <p>4、在上方的替换引导卷页面填写完毕并点击【<strong>保存</strong>】后，该实例的引导卷将经历一个 <strong>正在分离</strong> – <strong>已分离</strong> – <strong>正在附加</strong> – <strong>已附加</strong> 的过程，持续时间大概3-5分钟。</p>
+    <p>至此，通过替换引导卷就完成了<strong>甲骨文云重装系统</strong>的操作。</p>
+    <p>最后，如果你前面选择了【<strong>保留引导卷</strong>】，之后想替换回之前的引导卷时，只需在【<strong>替换引导卷</strong>】页面，选择【引导卷】、【从列表中选择】，然后在下方列表里选择之前的引导卷后，点击【保存】即可。</p>
+    <p><strong>文末附上甲骨文云官方支持文档中关于替换引导券的说明：</strong></p>
+    
+    <h5>更换启动卷</h5>
+    <p>您可以自动替换实例的启动卷，而无需终止并重新创建实例。实例停止，替换启动卷，并将实例返回到卷替换过程之前的状态。如果检测到问题或需要升级以实现新功能，此功能允许更换引导卷。</p>
+    
+    <h5>引导卷替换要求和选项</h5>
+    <p>以下是使用启动卷替换的关键操作系统和映像要求：</p>
+    <ul>
+    <li>仅支持 Linux 操作系统和映像。</li>
+    <li>不支持 Windows 和市场图像。</li>
+    <li>引导卷只能替换为使用相同 Linux 发行版的块卷和映像。例如，您无法从 Oracle Linux 切换到 Ubuntu，反之亦然。</li>
+    <li>映像限制适用于与映像以及实例上当前内容关联的启动选项。例如，如果映像的启动卷附件类型与实例启动选项不匹配，则该映像将被视为无效。</li>
     </ul>
 
-    
-    <ul class="nav-right">
-                                          <li class="nav-search">
-        <a href="javascript:;" class="search-loader" title="搜索"><i class="icon icon-search"></i></a>
-      </li>
-                        <li class="nav-button"><a href="javascript:;" class="nav-loader"><i class="icon icon-menu"></i></a></li>
-          </ul>
+    <h2>方案二、分离硬盘，挂载到其他实例重新安装系统</h2>
+    <p>救砖原理为：服务器数据存储在甲骨文的磁盘里，也就是那个默认 50G 的盘里。这个盘可以分离，挂载，重置数据。可以理解为你的 U 盘，可以拔出来，换台电脑重置一下系统，再插回去。</p>
+    <p>1. 同账号找一个新的实例；如果没有则创建一个免费的实例</p>
+    <p>2.停止失联实例:注意是停止<strong>不是终止</strong>，一会还得挂载回来</p>
+    <p>3. 分离失联实例硬盘</p>
+    <p>4. 挂载失联实例引导卷</p>
+    <p>新版本甲骨文云界面，要先去找到这个硬盘，然后附加到你的其他机器上，而不是找到其他应用实例的机器附加硬盘。，存储——&gt;块存储卷——&gt;引导卷——&gt;附加到实例</p>
+    <p>挂载的方式选择半虚拟化，这个更简单。</p>
+    <p>SSH连接刚刚了挂载失联硬盘的实例。使用 <code>lsblk</code> 或 <code>fdisk -l</code> 命令，你就可以查看到附加的ARM引导卷，一般是 <code>/dev/sdb</code> （具体盘符请自行查看）。</p>
+    <p>5、接下来就下载DD救援包。如果自己没有备份救援包的话，这里提供2个ARM救援包和2个AMD救援包给大家使用（大家也可以自行备份自己手上现有的AMD或ARM机型，制作救援包。方法见文末）：</p>
+    <p><strong>ARM</strong>镜像Debian10 ，DD 过程应小于 12 分钟。用户名root/密码10086.fit</p>
+    <pre><code>cd /root &amp;&amp; wget -cO debian.sdb.gz https://github.com/MIKU-N/OracleBackup/raw/main/dabian.sdb.gz?download=</code></pre>
+    <pre><code>gzip -dc /root/debian.sdb.gz | dd of=/dev/sdb</code></pre>
+    <p><strong>Ubuntu 20.04 ARM 官方原版完整救援包</strong>（恢复数据约46G，耗时约1个多小时）</p>
+    <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.arm.img.gz</code></pre>
+    <p>用户名:<code>root</code>, 密码:<code>CNBoy.org</code>。或下载下方秘钥，载入SSH工具，无密码登录</p>
+    <pre><code>https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/backup</code></pre>
+    <p><strong>Ubuntu 20.04 AMD 官方原版完整救援包</strong>（恢复数据约46G，耗时约1个多小时）</p>
+    <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.amd.img.gz</code></pre>
+    <p>用户名:<code>root</code>, 密码:<code>CNBoy.org</code>。或下载下方秘钥，载入SSH工具，无密码登录</p>
+    <p>debian10 ARM 网络精简救援包（恢复数据约3G，耗时约10多分钟）</p>
+    <pre><code>wget --no-check-certificate https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/dabian10.arm.img.gz</code></pre>
+    <p>用户名：<code>root</code>, 密码：<code>10086.fit</code></p>
+    <p>6、恢复镜像到 <code>/dev/sdb</code> 分区（如果你的引导卷加载路径不同，请自行修改路径）</p>
+    <pre><code>说明：为了防止你在SSH连接在恢复数据中途失败，建议使用 srceen 后台窗口运行以下命令
 
-  </div>
-</header>
-
-
-<div class="search-wrap">
-  <div class="container search-wrap-container">
-    <form action="https://jiemahao.com/" class="search-form" method="get">
-            <input autocomplete="off" class="search-input" name="s" placeholder="输入关键字回车" type="text">
-      <button class="search-btn" type="submit"><i class="icon icon-search"></i>搜索</button>
-      <i class="icon icon-close"></i>
-      <input type="hidden" name="cat" class="search-cat-val">
-          </form>
-  </div>
-</div><div class="main">
-		<div class="container clearfix">
-				<div class="breadcrumbs">当前位置：<span><a href="https://jiemahao.com/" itemprop="url"><span itemprop="title">首页</span></a></span> <span class="sep"><i class="dripicons dripicons-chevron-right"></i></span> <span><a href="https://jiemahao.com/domain-host/" itemprop="url"><span itemprop="title">域名主机</span></a></span> <span class="sep"><i class="dripicons dripicons-chevron-right"></i></span> <span class="current">正文</span></div>						<div class="content-wrap">
-	    	<div class="content">
-	    			    			    			    			    		<article id="single-content" class="single-content">
-		    		<div class="article-header">	<h1 class="article-title">新版界面甲骨云AMD/ARM实例DD失败失联救援教程</h1>
-	<div class="article-meta">
-				<span class="item"><i class="icon icon-time"></i> 2026-03-31</span>		<span class="item item-cats"><i class="icon icon-cat"></i> <a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></span>									</div>
-</div>		    				    		<div class="article-content clearfix">
-		    					    					    					    					    						    						    						    						    			<p>&#x5728;&#x6298;&#x817E;&#x7532;&#x9AA8;&#x6587;&#x4E91;&#xFF08;Oracle Cloud&#xFF09;&#x65F6;&#xFF0C;DD &#x811A;&#x672C;&#x5931;&#x8D25;&#x5BFC;&#x81F4;&#x5B9E;&#x4F8B;&#x5931;&#x8054;&#x3001;&#x65E0;&#x6CD5;&#x901A;&#x8FC7; ssh &#x94FE;&#x63A5;&#x4F60;&#x7684;&#x670D;&#x52A1;&#x5668;&#x4E86;&#xFF08;&#x53D8;&#x7816;&#xFF09;&#x662F;&#x5E38;&#x6709;&#x7684;&#x4E8B;&#x3002;&#x7531;&#x4E8E;&#x7532;&#x9AA8;&#x6587;&#x540E;&#x53F0;&#x754C;&#x9762;&#x7ECF;&#x5E38;&#x66F4;&#x65B0;&#xFF0C;&#x5F88;&#x591A;&#x65E7;&#x6559;&#x7A0B;&#x5DF2;&#x7ECF;&#x5931;&#x6548;&#x3002;&#x672C;&#x6559;&#x7A0B;&#x9488;&#x5BF9;&#x65B0;&#x7248;&#x63A7;&#x5236;&#x53F0;&#x754C;&#x9762;&#xFF0C;&#x603B;&#x7ED3;&#x4E86;&#x4E24;&#x79CD;&#x6700;&#x4E3B;&#x6D41;&#x3001;&#x6700;&#x9AD8;&#x6548;&#x7684;&#x6551;&#x63F4;&#x65B9;&#x6CD5;&#x3002;</p>
-<h2>&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x5B98;&#x65B9;&#x91CD;&#x88C5;&#x6CD5;&#xFF08;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377; + &#x5143;&#x6570;&#x636E;&#x521D;&#x59CB;&#x5316;&#xFF09;</h2>
-<p>&#x9002;&#x7528;&#x573A;&#x666F;&#xFF1A; &#x5F15;&#x5BFC;&#x5377;&#x5BB9;&#x91CF;&#x5C0F;&#x4E8E; 200GB&#xFF0C;&#x4E14;&#x5E0C;&#x671B;&#x5728;&#x4E0D;&#x5220;&#x9664;&#x5B9E;&#x4F8B;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x5FEB;&#x901F;&#x6062;&#x590D;&#x4E00;&#x4E2A;&#x7EAF;&#x51C0;&#x7684;&#x5B98;&#x65B9;&#x7CFB;&#x7EDF;&#x3002;<br />
-&#x4F18;&#x70B9;&#xFF1A; &#x6D41;&#x7A0B;&#x7B80;&#x5355;&#xFF0C;&#x65E0;&#x9700;&#x64CD;&#x4F5C;&#x5176;&#x4ED6;&#x6551;&#x63F4;&#x5B9E;&#x4F8B;&#xFF0C;&#x652F;&#x6301;&#x76F4;&#x63A5;&#x901A;&#x8FC7;&#x201C;&#x5143;&#x6570;&#x636E;&#x201D;&#x8BBE;&#x7F6E; root &#x5BC6;&#x7801;&#x3002;</p>
-<p>&#x6B64;&#x6559;&#x7A0B;&#x662F;&#x901A;&#x8FC7;&#x5B98;&#x65B9;&#x63D0;&#x4F9B;&#x7684;&#x66F4;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x6765;&#x5B9E;&#x73B0;&#x91CD;&#x88C5;&#x7CFB;&#x7EDF;&#x7684;&#x76EE;&#x7684;&#x3002;</p>
-<p>1&#x3001;&#x5BFC;&#x822A;&#x81F3;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x5217;&#x8868;&#x9875;&#x9762;&#xFF0C;&#x5728;&#x8FD9;&#x91CC;&#x9009;&#x62E9;&#x4F60;&#x9700;&#x8981;&#x91CD;&#x88C5;&#x7CFB;&#x7EDF;&#x7684;&#x5B9E;&#x4F8B;&#xFF0C;&#x70B9;&#x51FB;&#x8FDB;&#x5165;&#x5230;&#x8BE5;&#x5B9E;&#x4F8B;&#x7684;&#x8BE6;&#x60C5;&#x9875;</p>
-<p>2&#x3001;&#x8FDB;&#x5165;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x8BE6;&#x60C5;&#x9875;&#x8FDB;&#x884C;&#x91CD;&#x88C5;&#x7CFB;&#x7EDF;&#xFF0C;&#x8FD9;&#x91CC;&#x6709;&#x4E24;&#x79CD;&#x65B9;&#x5F0F;&#x90FD;&#x53EF;&#x4EE5;&#x5230;&#x8FBE;&#x91CD;&#x88C5;&#x7CFB;&#x7EDF;&#x7684;&#x754C;&#x9762;&#xFF1A;</p>
-<p>2.1&#x3001;&#x5728;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x8BE6;&#x60C5;&#x9875;&#x9876;&#x7AEF;&#x9009;&#x9879;&#x680F;&#xFF0C;&#x9009;&#x62E9;&#x3010;&#x66F4;&#x591A;&#x64CD;&#x4F5C;&#x3011;-&#x3010;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x3011;</p>
-<p>2.2&#x3001;&#x5728;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x8BE6;&#x60C5;&#x9875;&#x4E0B;&#x62C9;&#x5230;&#x4E0B;&#x65B9;&#x5217;&#x8868;&#xFF0C;&#x9009;&#x62E9;&#x3010;&#x5F15;&#x5BFC;&#x5377;&#x3011;-&#x3010;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x3011;</p>
-<p>3&#x3001;&#x70B9;&#x51FB;&#x3010;<strong>&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;</strong>&#x3011;&#x540E;&#xFF0C;&#x5728;&#x5F39;&#x51FA;&#x7684;&#x9875;&#x9762;&#x4E2D;&#xFF0C;&#x9009;&#x62E9;&#x3010;<strong>&#x6620;&#x50CF;</strong>&#x3011;&#x3001;&#x3010;<strong>&#x8F93;&#x5165;OCID</strong>&#x3011;&#xFF0C;&#x5E76;&#x5728;&#x4E0B;&#x65B9;&#x3010;<strong>&#x8F93;&#x5165;&#x6620;&#x50CF;OCID</strong>&#x3011;&#x5904;&#x586B;&#x5165;OCID&#x3002;</p>
-<p><strong>&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;</strong>&#xFF1A;</p>
-<ul class="wp-block-list">
-<li><strong>&#x4FDD;&#x7559;&#x5F15;&#x5BFC;&#x5377;</strong>&#xFF1A;&#x5F00;&#x542F;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x540E;&#xFF0C;&#x5C06;&#x4FDD;&#x7559;&#x5F53;&#x524D;&#x5F15;&#x5BFC;&#x5377;&#xFF0C;&#x4EE5;&#x540E;&#x968F;&#x540E;&#x6240;&#x9700;&#x65F6;&#x4F7F;&#x7528;&#xFF1B;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x8FD9;&#x4E2A;&#x9700;&#x6C42;&#xFF0C;&#x5C31;&#x4E0D;&#x8981;&#x5F00;&#x542F;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x3002;</li>
-<li><strong>&#x6620;&#x50CF;OCID</strong>&#xFF1A;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x8BE6;&#x60C5;&#x9875;&#x4E0B;&#x65B9;&#x5217;&#x8868;&#xFF0C;&#x70B9;&#x51FB;&#x3010;<strong>&#x5F15;&#x5BFC;&#x5377;</strong>&#x3011;&#x4E2D;&#x5BF9;&#x5E94;&#x7684;&#x3010;<strong>&#x6620;&#x50CF;</strong>&#x3011;&#x540E;&#xFF0C;&#x5C31;&#x80FD;&#x67E5;&#x770B;&#x5230;OCID&#xFF0C;&#x590D;&#x5236;&#x540E;&#x7C98;&#x8D34;&#x5230;&#x4E0A;&#x65B9;&#x5373;&#x53EF;&#x3002;</li>
-</ul>
-<p><strong>&#x5F15;&#x5BFC;&#x5377;&#x5927;&#x5C0F;</strong>&#xFF1A;&#x9ED8;&#x8BA4;&#x4E3A;47G&#xFF0C;&#x53EF;&#x4EE5;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;&#xFF0C;&#x540E;&#x7EED;&#x6839;&#x636E;&#x9700;&#x8981;&#x518D;&#x8FDB;&#x884C;&#x6269;&#x5C55;&#x3002;&#x5F53;&#x7136;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x81EA;&#x5DF1;&#x7684;&#x4F7F;&#x7528;&#x60C5;&#x51B5;&#x5728;&#x6B64;&#x5904;&#x76F4;&#x63A5;&#x8F93;&#x5165;&#x5927;&#x5C0F;&#x3002;</p>
-<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow"><p>&#x514D;&#x8D39;&#x7528;&#x6237;&#x5305;&#x542B;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x603B;&#x91CF;&#x4E0D;&#x5F97;&#x8D85;&#x8FC7;200G&#xFF0C;&#x8D85;&#x51FA;&#x540E;&#x66FF;&#x6362;&#x65F6;&#x5C31;&#x4F1A;&#x63D0;&#x793A;<code class="prettyprint prettyprinted"><span class="pln">bootVolumeQuota&#xA0;</span><span class="typ">Service</span><span class="pln">&#xA0;limit reached</span><span class="pun">.</span></code>&#xFF0C;&#x5BFC;&#x81F4;&#x65E0;&#x6CD5;&#x6210;&#x529F;&#x66FF;&#x6362;&#xFF1B;&#x610F;&#x601D;&#x662F;&#x5982;&#x679C;&#x4F60;&#x5F00;&#x6EE1;&#x4E86; &#x514D;&#x8D39;&#x7684;4 &#x53F0;&#xFF0C;&#x6B64;&#x65B9;&#x6CD5;&#x5C31;&#x4E0D;&#x9002;&#x7528;&#x3002;<br />
-&#x6536;&#x8D39;&#x7528;&#x6237;&#x6CA1;&#x6709;&#x6B64;&#x9650;&#x5236;&#xFF0C;&#x4F46;&#x66FF;&#x6362;&#x540E;&#x603B;&#x91CF;&#x4E0D;&#x8D85;&#x51FA;200G&#x5C31;&#x4E0D;&#x4F1A;&#x989D;&#x5916;&#x6536;&#x8D39;&#x3002;</p></blockquote>
-<ul class="wp-block-list">
-<li>&#x5982;&#x679C;&#x4F60;&#x8FD8;&#x8BB0;&#x5F97;&#x4E4B;&#x524D;&#x7684;&#x79D8;&#x94A5;&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x3010;<strong>&#x4FDD;&#x5B58;</strong>&#x3011;&#x5373;&#x53EF;&#x3002;&#x5982;&#x679C;&#x4F60;&#x5FD8;&#x8BB0;&#x4E86;&#x4E4B;&#x524D;&#x7684;&#x79D8;&#x94A5;&#x6216;&#x662F;&#x60F3;&#x66F4;&#x6362;&#x65B0;&#x7684;&#x79D8;&#x94A5;&#x6216;&#x5BC6;&#x7801;&#x3002;&#x5728;&#x3010;<strong>&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;</strong>&#x3011;&#x4E2D;&#x70B9;&#x51FB;&#x9875;&#x9762;&#x4E0B;&#x65B9;&#x7684;&#x3010;<strong>&#x9AD8;&#x7EA7;&#x9009;&#x9879;</strong>&#x3011;&#xFF0C;&#x70B9;&#x51FB;&#x3010;<strong>&#x5143;&#x6570;&#x636E;</strong>&#x3011;,&#x5728;&#x3010;<strong>&#x540D;&#x79F0;</strong>&#x3011;&#x5904;&#x8F93;&#x5165;<code class="prettyprint prettyprinted"><span class="pln">user_data</span></code>&#xFF0C;&#x3010;<strong>&#x503C;</strong>&#x3011;&#x5904;&#x8F93;&#x5165;&#x65B0;&#x7684;&#xA0;<strong>&#x516C;&#x94A5;&#xA0;</strong>&#xFF0C;&#x6216;&#x662F;&#x4E0B;&#x9762;&#x811A;&#x672C;&#x7684;base64&#x52A0;&#x5BC6;&#x503C;&#xFF08;base64&#x52A0;&#x5BC6;&#x65B9;&#x6CD5;&#x53EF;&#x5728;&#x7EBF;&#x641C;&#x7D22;&#x201C;&#x5728;&#x7EBF;base64&#x52A0;&#x5BC6;&#x201D;&#x4EFB;&#x9009;&#x4E00;&#x4E2A;&#x8FDB;&#x884C;&#x5728;&#x7EBF;&#x52A0;&#x5BC6;&#x5373;&#x53EF;&#xFF09;</li>
-</ul>
-<pre class="prettyprint"><code>#!/bin/bash echo root:&#x6B64;&#x5904;&#x6539;&#x4E3A;&#x4F60;&#x7684;&#x5BC6;&#x7801; | chpasswd root sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config rm -rf /etc/ssh/sshd_config.d/* &amp;&amp; rm -rf /etc/ssh/ssh_config.d/* /etc/init.d/ssh* restart</code></pre>
-<p>4&#x3001;&#x5728;&#x4E0A;&#x65B9;&#x7684;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x9875;&#x9762;&#x586B;&#x5199;&#x5B8C;&#x6BD5;&#x5E76;&#x70B9;&#x51FB;&#x3010;<strong>&#x4FDD;&#x5B58;</strong>&#x3011;&#x540E;&#xFF0C;&#x8BE5;&#x5B9E;&#x4F8B;&#x7684;&#x5F15;&#x5BFC;&#x5377;&#x5C06;&#x7ECF;&#x5386;&#x4E00;&#x4E2A;&#xA0;<strong>&#x6B63;&#x5728;&#x5206;&#x79BB;</strong>&#xA0;&#x2013;&#xA0;<strong>&#x5DF2;&#x5206;&#x79BB;</strong>&#xA0;&#x2013;&#xA0;<strong>&#x6B63;&#x5728;&#x9644;&#x52A0;</strong>&#xA0;&#x2013;&#xA0;<strong>&#x5DF2;&#x9644;&#x52A0;</strong>&#xA0;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x6301;&#x7EED;&#x65F6;&#x95F4;&#x5927;&#x6982;3-5&#x5206;&#x949F;&#x3002;</p>
-<p>&#x81F3;&#x6B64;&#xFF0C;&#x901A;&#x8FC7;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x5C31;&#x5B8C;&#x6210;&#x4E86;<strong>&#x7532;&#x9AA8;&#x6587;&#x4E91;&#x91CD;&#x88C5;&#x7CFB;&#x7EDF;</strong>&#x7684;&#x64CD;&#x4F5C;&#x3002;</p>
-<p>&#x6700;&#x540E;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x524D;&#x9762;&#x9009;&#x62E9;&#x4E86;&#x3010;<strong>&#x4FDD;&#x7559;&#x5F15;&#x5BFC;&#x5377;</strong>&#x3011;&#xFF0C;&#x4E4B;&#x540E;&#x60F3;&#x66FF;&#x6362;&#x56DE;&#x4E4B;&#x524D;&#x7684;&#x5F15;&#x5BFC;&#x5377;&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x5728;&#x3010;<strong>&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5377;</strong>&#x3011;&#x9875;&#x9762;&#xFF0C;&#x9009;&#x62E9;&#x3010;&#x5F15;&#x5BFC;&#x5377;&#x3011;&#x3001;&#x3010;&#x4ECE;&#x5217;&#x8868;&#x4E2D;&#x9009;&#x62E9;&#x3011;&#xFF0C;&#x7136;&#x540E;&#x5728;&#x4E0B;&#x65B9;&#x5217;&#x8868;&#x91CC;&#x9009;&#x62E9;&#x4E4B;&#x524D;&#x7684;&#x5F15;&#x5BFC;&#x5377;&#x540E;&#xFF0C;&#x70B9;&#x51FB;&#x3010;&#x4FDD;&#x5B58;&#x3011;&#x5373;&#x53EF;&#x3002;</p>
-<p><strong>&#x6587;&#x672B;&#x9644;&#x4E0A;&#x7532;&#x9AA8;&#x6587;&#x4E91;&#x5B98;&#x65B9;&#x652F;&#x6301;&#x6587;&#x6863;&#x4E2D;&#x5173;&#x4E8E;&#x66FF;&#x6362;&#x5F15;&#x5BFC;&#x5238;&#x7684;&#x8BF4;&#x660E;&#xFF1A;</strong></p>
-<h5 id="ariaid-title1" class="wp-block-heading">&#x66F4;&#x6362;&#x542F;&#x52A8;&#x5377;</h5>
-<p>&#x60A8;&#x53EF;&#x4EE5;&#x81EA;&#x52A8;&#x66FF;&#x6362;&#x5B9E;&#x4F8B;&#x7684;&#x542F;&#x52A8;&#x5377;&#xFF0C;&#x800C;&#x65E0;&#x9700;&#x7EC8;&#x6B62;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x5B9E;&#x4F8B;&#x3002;&#x5B9E;&#x4F8B;&#x505C;&#x6B62;&#xFF0C;&#x66FF;&#x6362;&#x542F;&#x52A8;&#x5377;&#xFF0C;&#x5E76;&#x5C06;&#x5B9E;&#x4F8B;&#x8FD4;&#x56DE;&#x5230;&#x5377;&#x66FF;&#x6362;&#x8FC7;&#x7A0B;&#x4E4B;&#x524D;&#x7684;&#x72B6;&#x6001;&#x3002;&#x5982;&#x679C;&#x68C0;&#x6D4B;&#x5230;&#x95EE;&#x9898;&#x6216;&#x9700;&#x8981;&#x5347;&#x7EA7;&#x4EE5;&#x5B9E;&#x73B0;&#x65B0;&#x529F;&#x80FD;&#xFF0C;&#x6B64;&#x529F;&#x80FD;&#x5141;&#x8BB8;&#x66F4;&#x6362;&#x5F15;&#x5BFC;&#x5377;&#x3002;</p>
-<h5 id="toc-1" class="wp-block-heading">&#x5F15;&#x5BFC;&#x5377;&#x66FF;&#x6362;&#x8981;&#x6C42;&#x548C;&#x9009;&#x9879;</h5>
-<p>&#x4EE5;&#x4E0B;&#x662F;&#x4F7F;&#x7528;&#x542F;&#x52A8;&#x5377;&#x66FF;&#x6362;&#x7684;&#x5173;&#x952E;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x548C;&#x6620;&#x50CF;&#x8981;&#x6C42;&#xFF1A;</p>
-<ul class="wp-block-list">
-<li>&#x4EC5;&#x652F;&#x6301; Linux &#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x548C;&#x6620;&#x50CF;&#x3002;</li>
-<li>&#x4E0D;&#x652F;&#x6301; Windows &#x548C;&#x5E02;&#x573A;&#x56FE;&#x50CF;&#x3002;</li>
-<li>&#x5F15;&#x5BFC;&#x5377;&#x53EA;&#x80FD;&#x66FF;&#x6362;&#x4E3A;&#x4F7F;&#x7528;&#x76F8;&#x540C; Linux &#x53D1;&#x884C;&#x7248;&#x7684;&#x5757;&#x5377;&#x548C;&#x6620;&#x50CF;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x60A8;&#x65E0;&#x6CD5;&#x4ECE; Oracle Linux &#x5207;&#x6362;&#x5230; Ubuntu&#xFF0C;&#x53CD;&#x4E4B;&#x4EA6;&#x7136;&#x3002;</li>
-<li>&#x6620;&#x50CF;&#x9650;&#x5236;&#x9002;&#x7528;&#x4E8E;&#x4E0E;&#x6620;&#x50CF;&#x4EE5;&#x53CA;&#x5B9E;&#x4F8B;&#x4E0A;&#x5F53;&#x524D;&#x5185;&#x5BB9;&#x5173;&#x8054;&#x7684;&#x542F;&#x52A8;&#x9009;&#x9879;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x6620;&#x50CF;&#x7684;&#x542F;&#x52A8;&#x5377;&#x9644;&#x4EF6;&#x7C7B;&#x578B;&#x4E0E;&#x5B9E;&#x4F8B;&#x542F;&#x52A8;&#x9009;&#x9879;&#x4E0D;&#x5339;&#x914D;&#xFF0C;&#x5219;&#x8BE5;&#x6620;&#x50CF;&#x5C06;&#x88AB;&#x89C6;&#x4E3A;&#x65E0;&#x6548;&#x3002;</li>
-</ul>
-<h2>&#x65B9;&#x6848;&#x4E8C;&#x3001;&#x5206;&#x79BB;&#x786C;&#x76D8;&#xFF0C;&#x6302;&#x8F7D;&#x5230;&#x5176;&#x4ED6;&#x5B9E;&#x4F8B;&#x91CD;&#x65B0;&#x5B89;&#x88C5;&#x7CFB;&#x7EDF;</h2>
-<p>&#x6551;&#x7816;&#x539F;&#x7406;&#x4E3A;&#xFF1A;&#x670D;&#x52A1;&#x5668;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x7532;&#x9AA8;&#x6587;&#x7684;&#x78C1;&#x76D8;&#x91CC;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x90A3;&#x4E2A;&#x9ED8;&#x8BA4; 50G &#x7684;&#x76D8;&#x91CC;&#x3002;&#x8FD9;&#x4E2A;&#x76D8;&#x53EF;&#x4EE5;&#x5206;&#x79BB;&#xFF0C;&#x6302;&#x8F7D;&#xFF0C;&#x91CD;&#x7F6E;&#x6570;&#x636E;&#x3002;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x4F60;&#x7684; U &#x76D8;&#xFF0C;&#x53EF;&#x4EE5;&#x62D4;&#x51FA;&#x6765;&#xFF0C;&#x6362;&#x53F0;&#x7535;&#x8111;&#x91CD;&#x7F6E;&#x4E00;&#x4E0B;&#x7CFB;&#x7EDF;&#xFF0C;&#x518D;&#x63D2;&#x56DE;&#x53BB;&#x3002;</p>
-<p>1. &#x540C;&#x8D26;&#x53F7;&#x627E;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x5B9E;&#x4F8B;&#xFF1B;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x5219;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x514D;&#x8D39;&#x7684;&#x5B9E;&#x4F8B;</p>
-<p>2.&#x505C;&#x6B62;&#x5931;&#x8054;&#x5B9E;&#x4F8B;:&#x6CE8;&#x610F;&#x662F;&#x505C;&#x6B62;<strong>&#x4E0D;&#x662F;&#x7EC8;&#x6B62;</strong>&#xFF0C;&#x4E00;&#x4F1A;&#x8FD8;&#x5F97;&#x6302;&#x8F7D;&#x56DE;&#x6765;</p>
-<p>3. &#x5206;&#x79BB;&#x5931;&#x8054;&#x5B9E;&#x4F8B;&#x786C;&#x76D8;</p>
-<p>4. &#x6302;&#x8F7D;&#x5931;&#x8054;&#x5B9E;&#x4F8B;&#x5F15;&#x5BFC;&#x5377;</p>
-<p>&#x65B0;&#x7248;&#x672C;&#x7532;&#x9AA8;&#x6587;&#x4E91;&#x754C;&#x9762;&#xFF0C;&#x8981;&#x5148;&#x53BB;&#x627E;&#x5230;&#x8FD9;&#x4E2A;&#x786C;&#x76D8;&#xFF0C;&#x7136;&#x540E;&#x9644;&#x52A0;&#x5230;&#x4F60;&#x7684;&#x5176;&#x4ED6;&#x673A;&#x5668;&#x4E0A;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x627E;&#x5230;&#x5176;&#x4ED6;&#x5E94;&#x7528;&#x5B9E;&#x4F8B;&#x7684;&#x673A;&#x5668;&#x9644;&#x52A0;&#x786C;&#x76D8;&#x3002;&#xFF0C;&#x5B58;&#x50A8;&#x2014;&#x2014;&gt;&#x5757;&#x5B58;&#x50A8;&#x5377;&#x2014;&#x2014;&gt;&#x5F15;&#x5BFC;&#x5377;&#x2014;&#x2014;&gt;&#x9644;&#x52A0;&#x5230;&#x5B9E;&#x4F8B;</p>
-<p>&#x6302;&#x8F7D;&#x7684;&#x65B9;&#x5F0F;&#x9009;&#x62E9;&#x534A;&#x865A;&#x62DF;&#x5316;&#xFF0C;&#x8FD9;&#x4E2A;&#x66F4;&#x7B80;&#x5355;&#x3002;</p>
-<p>SSH&#x8FDE;&#x63A5;&#x521A;&#x521A;&#x4E86;&#x6302;&#x8F7D;&#x5931;&#x8054;&#x786C;&#x76D8;&#x7684;&#x5B9E;&#x4F8B;&#x3002;&#x4F7F;&#x7528; <code>lsblk</code>&#xA0;&#x6216;&#xA0;<code>fdisk -l</code>&#xA0;&#x547D;&#x4EE4;&#xFF0C;&#x4F60;&#x5C31;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x5230;&#x9644;&#x52A0;&#x7684;ARM&#x5F15;&#x5BFC;&#x5377;&#xFF0C;&#x4E00;&#x822C;&#x662F;&#xA0;<code>/dev/sdb</code>&#xA0;&#xFF08;&#x5177;&#x4F53;&#x76D8;&#x7B26;&#x8BF7;&#x81EA;&#x884C;&#x67E5;&#x770B;&#xFF09;&#x3002;</p>
-<p>5&#x3001;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x4E0B;&#x8F7D;DD&#x6551;&#x63F4;&#x5305;&#x3002;&#x5982;&#x679C;&#x81EA;&#x5DF1;&#x6CA1;&#x6709;&#x5907;&#x4EFD;&#x6551;&#x63F4;&#x5305;&#x7684;&#x8BDD;&#xFF0C;&#x8FD9;&#x91CC;&#x63D0;&#x4F9B;2&#x4E2A;ARM&#x6551;&#x63F4;&#x5305;&#x548C;2&#x4E2A;AMD&#x6551;&#x63F4;&#x5305;&#x4F9B;&#x5927;&#x5BB6;&#x4F7F;&#x7528;&#xFF08;&#x5927;&#x5BB6;&#x4E5F;&#x53EF;&#x4EE5;&#x81EA;&#x884C;&#x5907;&#x4EFD;&#x81EA;&#x5DF1;&#x624B;&#x4E0A;&#x73B0;&#x6709;&#x7684;AMD&#x6216;ARM&#x673A;&#x578B;&#xFF0C;&#x5236;&#x4F5C;&#x6551;&#x63F4;&#x5305;&#x3002;&#x65B9;&#x6CD5;&#x89C1;&#x6587;&#x672B;&#xFF09;&#xFF1A;</p>
-<p><strong>ARM</strong>&#x955C;&#x50CF;Debian10 &#xFF0C;DD &#x8FC7;&#x7A0B;&#x5E94;&#x5C0F;&#x4E8E; 12 &#x5206;&#x949F;&#x3002;&#x7528;&#x6237;&#x540D;root/&#x5BC6;&#x7801;10086.fit</p>
-<pre class="prettyprint">cd /root &amp;&amp; wget -cO debian.sdb.gz https://github.com/MIKU-N/OracleBackup/raw/main/dabian.sdb.gz?download=</pre>
-<pre class="prettyprint"><code>gzip -dc /root/debian.sdb.gz | dd of=/dev/sdb</code></pre>
-<p><strong>Ubuntu 20.04 ARM &#x5B98;&#x65B9;&#x539F;&#x7248;&#x5B8C;&#x6574;&#x6551;&#x63F4;&#x5305;</strong>&#xFF08;&#x6062;&#x590D;&#x6570;&#x636E;&#x7EA6;46G&#xFF0C;&#x8017;&#x65F6;&#x7EA6;1&#x4E2A;&#x591A;&#x5C0F;&#x65F6;&#xFF09;</p>
-<pre class="prettyprint"><code><span class="pln">wget </span><span class="pun">--</span><span class="kwd">no</span><span class="pun">-</span><span class="pln">check</span><span class="pun">-</span><span class="pln">certificate https</span><span class="pun">:</span><span class="com">//github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.arm.img.gz</span></code></pre>
-<p>&#x7528;&#x6237;&#x540D;:<code>root</code>, &#x5BC6;&#x7801;:<code>CNBoy.org</code>&#x3002;&#x6216;&#x4E0B;&#x8F7D;&#x4E0B;&#x65B9;&#x79D8;&#x94A5;&#xFF0C;&#x8F7D;&#x5165;SSH&#x5DE5;&#x5177;&#xFF0C;&#x65E0;&#x5BC6;&#x7801;&#x767B;&#x5F55;</p>
-<pre class="prettyprint"><code><span class="pln">https</span><span class="pun">:</span><span class="com">//github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/backup</span></code></pre>
-<p><strong>Ubuntu 20.04 AMD &#x5B98;&#x65B9;&#x539F;&#x7248;&#x5B8C;&#x6574;&#x6551;&#x63F4;&#x5305;</strong>&#xFF08;&#x6062;&#x590D;&#x6570;&#x636E;&#x7EA6;46G&#xFF0C;&#x8017;&#x65F6;&#x7EA6;1&#x4E2A;&#x591A;&#x5C0F;&#x65F6;&#xFF09;</p>
-<pre class="prettyprint"><code><span class="pln">wget </span><span class="pun">--</span><span class="kwd">no</span><span class="pun">-</span><span class="pln">check</span><span class="pun">-</span><span class="pln">certificate https</span><span class="pun">:</span><span class="com">//github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.amd.img.gz</span></code></pre>
-<p>&#x7528;&#x6237;&#x540D;:<code>root</code>, &#x5BC6;&#x7801;:<code>CNBoy.org</code>&#x3002;&#x6216;&#x4E0B;&#x8F7D;&#x4E0B;&#x65B9;&#x79D8;&#x94A5;&#xFF0C;&#x8F7D;&#x5165;SSH&#x5DE5;&#x5177;&#xFF0C;&#x65E0;&#x5BC6;&#x7801;&#x767B;&#x5F55;<br />
-<i class="tbfa"></i><code><span class="com">//github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/backup</span></code><br />
-debian10 ARM &#x7F51;&#x7EDC;&#x7CBE;&#x7B80;&#x6551;&#x63F4;&#x5305;&#xFF08;&#x6062;&#x590D;&#x6570;&#x636E;&#x7EA6;3G&#xFF0C;&#x8017;&#x65F6;&#x7EA6;10&#x591A;&#x5206;&#x949F;&#xFF09;</p>
-<pre class="prettyprint"><code><span class="pln">wget </span><span class="pun">--</span><span class="kwd">no</span><span class="pun">-</span><span class="pln">check</span><span class="pun">-</span><span class="pln">certificate https</span><span class="pun">:</span><span class="com">//github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/dabian10.arm.img.gz</span></code></pre>
-<p>&#x7528;&#x6237;&#x540D;&#xFF1A;<code>root</code>, &#x5BC6;&#x7801;&#xFF1A;<code>10086.fit</code></p>
-<p>6&#x3001;&#x6062;&#x590D;&#x955C;&#x50CF;&#x5230;&#xA0;<code>/dev/sdb</code>&#xA0;&#x5206;&#x533A;&#xFF08;&#x5982;&#x679C;&#x4F60;&#x7684;&#x5F15;&#x5BFC;&#x5377;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;&#x4E0D;&#x540C;&#xFF0C;&#x8BF7;&#x81EA;&#x884C;&#x4FEE;&#x6539;&#x8DEF;&#x5F84;&#xFF09;</p>
-<pre class="prettyprint"><span class="pun">&#x8BF4;&#x660E;&#xFF1A;&#x4E3A;&#x4E86;&#x9632;&#x6B62;&#x4F60;&#x5728;</span><span class="pln">SSH</span><span class="pun">&#x8FDE;&#x63A5;&#x5728;&#x6062;&#x590D;&#x6570;&#x636E;&#x4E2D;&#x9014;&#x4E2D;&#x65AD;&#x5BFC;&#x81F4;&#x5931;&#x8D25;&#xFF0C;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;</span><span class="pln"> srceen </span><span class="pun">&#x540E;&#x53F0;&#x7A97;&#x53E3;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;</span>
-
-<code><span class="pln">gzip </span><span class="pun">-</span><span class="pln">dc </span><span class="str">'&#x6551;&#x63F4;&#x5305;&#x5B8C;&#x6574;&#x8DEF;&#x5F84;'</span> <span class="pun">|</span><span class="pln"> dd of</span><span class="pun">=</span><span class="str">'&#x5F15;&#x5BFC;&#x5377;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;'</span></code> <span class="pun">&#x4F8B;&#xFF1A;</span> <span class="pun">&#x4F7F;&#x7528;</span> <span class="typ">Ubuntu</span> <span class="lit">20.04</span><span class="pln"> ARM </span><span class="pun">&#x5B98;&#x65B9;&#x539F;&#x7248;&#x5B8C;&#x6574;&#x6551;&#x63F4;&#x5305;&#xFF0C;&#x547D;&#x4EE4;&#x5982;&#x4E0B;&#xFF1A;</span> <code><span class="pln">gzip </span><span class="pun">-</span><span class="pln">dc </span><span class="pun">/</span><span class="pln">root</span><span class="pun">/</span><span class="typ">Ubuntu20</span><span class="pun">.</span><span class="lit">04.arm</span><span class="pun">.</span><span class="pln">img</span><span class="pun">.</span><span class="pln">gz </span><span class="pun">|</span><span class="pln"> dd of</span><span class="pun">=</span><span class="str">/dev/</span><span class="pln">sdb</span></code> <span class="pun">&#x4F7F;&#x7528;</span> <span class="typ">Ubuntu</span> <span class="lit">20.04</span><span class="pln"> AMD </span><span class="pun">&#x5B98;&#x65B9;&#x539F;&#x7248;&#x5B8C;&#x6574;&#x6551;&#x63F4;&#x5305;&#xFF0C;&#x547D;&#x4EE4;&#x5982;&#x4E0B;&#xFF1A;</span> <code><span class="pln">gzip </span><span class="pun">-</span><span class="pln">dc </span><span class="pun">/</span><span class="pln">root</span><span class="pun">/</span><span class="typ">Ubuntu20</span><span class="pun">.</span><span class="lit">04.amd</span><span class="pun">.</span><span class="pln">img</span><span class="pun">.</span><span class="pln">gz </span><span class="pun">|</span><span class="pln"> dd of</span><span class="pun">=</span><span class="str">/dev/</span><span class="pln">sdb</span></code> <span class="pun">&#x4F7F;&#x7528;</span><span class="pln"> debian10 ARM </span><span class="pun">&#x7F51;&#x7EDC;&#x7CBE;&#x7B80;&#x6551;&#x63F4;&#x5305;&#xFF0C;&#x547D;&#x4EE4;&#x5982;&#x4E0B;&#xFF1A;</span> <code><span class="pln">gzip </span><span class="pun">-</span><span class="pln">dc </span><span class="pun">/</span><span class="pln">root</span><span class="pun">/</span><span class="pln">dabian10</span><span class="pun">.</span><span class="pln">arm</span><span class="pun">.</span><span class="pln">img</span><span class="pun">.</span><span class="pln">gz </span><span class="pun">|</span><span class="pln"> dd of</span><span class="pun">=</span><span class="str">/dev/</span><span class="pln">sdb</span></code></pre>
-<p>7&#x3001;&#x6062;&#x590D;&#x8FC7;&#x7A0B;&#x4E2D;&#x4F60;&#x53EF;&#x4EE5;&#x65B0;&#x5F00;&#x4E00;&#x4E2A;SSH&#x7A97;&#x53E3;&#xFF0C;&#x7136;&#x540E;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x540E;&#x4E0D;&#x8981;&#x5173;&#x95ED;&#xFF0C;&#x5207;&#x6362;&#x56DE;&#x6062;&#x590D;&#x547D;&#x4EE4;&#x7684;&#x7A97;&#x53E3;&#x67E5;&#x770B;&#x8FDB;&#x5EA6;</p>
-<pre class="prettyprint"><code><span class="pln">watch </span><span class="pun">-</span><span class="pln">n </span><span class="lit">5</span><span class="pln"> pkill </span><span class="pun">-</span><span class="pln">USR1 </span><span class="pun">^</span><span class="pln">dd$</span></code></pre>
-<p>8. &#x7B49;&#x5F85;&#x955C;&#x50CF;&#x6062;&#x590D;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x5230;&#x7532;&#x9AA8;&#x6587;&#x540E;&#x53F0;&#xFF0C;&#x5728;&#x521A;&#x624D;&#x6302;&#x8F7D;&#x4E86;&#x786C;&#x76D8;&#x7684;&#x5B9E;&#x4F8B;&#x4E2D;&#x5378;&#x8F7D;&#x6389;&#x521A;&#x521A;&#x9644;&#x52A0;&#x7684;&#x5757;&#x50A8;&#x5B58;&#x5377;&#xFF0C;&#x5E76;&#x81F3;&#x8981;&#x4FEE;&#x590D;&#x7684;&#x5B9E;&#x4F8B;&#x4E2D;&#x6302;&#x8F7D;&#x56DE;&#x8FD9;&#x4E2A;&#x5F15;&#x5BFC;&#x5377;&#x3002;&#x7136;&#x540E;&#x542F;&#x52A8;&#x5B9E;&#x4F8B;&#x3002;SSH&#x8FDE;&#x63A5;&#xFF0C;&#x4F60;&#x5C31;&#x4F1A;&#x53D1;&#x73B0;&#x4F60;&#x7684;&#x5931;&#x8054;&#x673A;&#x5668;&#x53C8;&#x590D;&#x6D3B;&#x4E86;&#xFF01;</p>
-<p>&#x5982;&#x5361;Grub&#x5219;&#x9700;&#x8981;&#x683C;&#x5F0F;&#x5316;&#x5F15;&#x5BFC;&#x76D8;&#x540E;&#x518D;dd</p>
-<p>&#x5347;&#x7EA7;&#x6211;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x4E86;&#x53E6;&#x4E00;&#x4E2A;dd&#x811A;&#x672C;,&#xA0; &#x9ED8;&#x8BA4;&#x5BC6;&#x7801;&#x662F; LeitboGi0ro</p>
-<pre class="prettyprint"><code>wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' &amp;&amp; chmod a+x InstallNET.sh
+gzip -dc '救援包完整路径' | dd of='引导卷加载路径' 
+例： 
+使用 Ubuntu 20.04 ARM 官方原版完整救援包，命令如下：
+gzip -dc /root/Ubuntu20.04.arm.img.gz | dd of=/dev/sdb 
+使用 Ubuntu 20.04 AMD 官方原版完整救援包，命令如下：
+gzip -dc /root/Ubuntu20.04.amd.img.gz | dd of=/dev/sdb 
+使用 debian10 ARM 网络精简救援包，命令如下：
+gzip -dc /root/dabian10.arm.img.gz | dd of=/dev/sdb</code></pre>
+    <p>7、恢复过程中你可以新开一个SSH窗口，然后运行以下命令后不要关闭，切换回恢复命令的窗口查看进度</p>
+    <pre><code>watch -n 5 pkill -USR1 ^dd$</code></pre>
+    <p>8. 等待镜像恢复完成后，到甲骨文后台，在刚才挂载了硬盘的实例中卸载掉刚刚附加的块存储卷，并至要修复的实例中挂载回这个引导卷。然后启动实例。SSH连接，你就会发现你的失联机器又复活了！</p>
+    <p>如卡Grub则需要格式化引导盘后再dd</p>
+    <p>升级我直接使用了另一个dd脚本, 默认密码是 LeitboGi0ro</p>
+    <pre><code>wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' &amp;&amp; chmod a+x InstallNET.sh
 bash InstallNET.sh -debian 12 -pwd 'jiemahao'</code></pre>
-<div class="highlight">
-<p>&#x6302;&#x8F7D;&#x6298;&#x817E;&#x574F;&#x4E86;&#x7684;&#x5B9E;&#x4F8B;&#x7684;&#x5F15;&#x5BFC;&#x5377;&#x5230;&#x540C;&#x8D26;&#x53F7;&#x5176;&#x4ED6;&#x7532;&#x9AA8;&#x6587;&#x5B9E;&#x4F8B;&#x3002;&#x6267;&#x884C; lsblk &#x770B;&#x770B;&#x6302;&#x8F7D;&#x7684;&#x5377;&#x8BBE;&#x5907;&#x540D;&#xFF0C;&#x4E00;&#x822C;&#x662F; sdb,</p>
-<p>1.1 &#x6551;&#x7816;&#x7532;&#x9AA8;&#x6587; AMD &#x6267;&#x884C;</p>
-<pre id="hljs-item-0" class="corepress-code-pre hljs language-javascript">curl -<span class="hljs-title class_">Lo</span>- <span class="hljs-string">"https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-amd64.tar.xz"</span> | tar -xJO | dd <span class="hljs-keyword">of</span>=<span class="hljs-regexp">/dev/</span>sdb bs=1M</pre>
-<p>&#x5982;&#x679C;&#x9700;&#x8981; Debian 12 &#x7CFB;&#x7EDF;&#xFF0C;&#x5219;&#x6267;&#x884C;</p>
-<pre id="hljs-item-1" class="corepress-code-pre hljs language-javascript">curl -<span class="hljs-title class_">Lo</span>- <span class="hljs-string">"https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.tar.xz"</span> | tar -xJO | dd <span class="hljs-keyword">of</span>=<span class="hljs-regexp">/dev/</span>sdb bs=1M</pre>
-<p>1.2 &#x6551;&#x7816; &#x7532;&#x9AA8;&#x6587; ARM &#x6267;&#x884C;</p>
-<pre id="hljs-item-2" class="corepress-code-pre hljs language-javascript">curl -<span class="hljs-title class_">Lo</span>- <span class="hljs-string">"https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-arm64.tar.xz"</span> | tar -xJO | dd <span class="hljs-keyword">of</span>=<span class="hljs-regexp">/dev/</span>sdb bs=1M</pre>
-<p>&#x5982;&#x679C;&#x9700;&#x8981; Debian 12 &#x7CFB;&#x7EDF;&#xFF0C;&#x5219;&#x6267;&#x884C;</p>
-<pre id="hljs-item-3" class="corepress-code-pre hljs language-javascript">curl -<span class="hljs-title class_">Lo</span>- <span class="hljs-string">"https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-arm64.tar.xz"</span> | tar -xJO | dd <span class="hljs-keyword">of</span>=<span class="hljs-regexp">/dev/</span>sdb bs=1M</pre>
-<p>DD &#x8FC7;&#x7A0B;&#x5927;&#x7EA6; 25 &#x5206;&#x949F;&#x3002;</p>
-<p>2. &#x5B8C;&#x6210;&#x540E;&#x5206;&#x79BB;&#x5377;&#x6302;&#x8F7D;&#x56DE;&#x539F;&#x5B9E;&#x4F8B;&#x3002;&#x542F;&#x52A8;&#x5B9E;&#x4F8B;&#x3002;</p>
-<p>3.&#x70B9;&#x51FB;&#x201C;&#x63A7;&#x5236;&#x53F0;&#x8FDE;&#x63A5;&#x201D;&#x4E0B;&#x7EA7;&#x83DC;&#x5355;&#x7684; &#x542F;&#x52A8;&#x201C;Cloud Shell &#x8FDE;&#x63A5;&#x201D;&#x3002;<br />
-&#x5F3A;&#x5236;&#x91CD;&#x542F;&#x5B9E;&#x4F8B;&#x3002;<br />
-&#x770B;&#x5230;&#x5B9E;&#x4F8B;&#x542F;&#x52A8;&#x540E;&#xFF0C;&#x4F7F;&#x7528;&#x7528;&#x6237;&#x540D; root &#x5BC6;&#x7801;&#x7A7A;&#x767B;&#x5F55;&#x5B9E;&#x4F8B;&#x3002;<br />
-&#x7528;&#x547D;&#x4EE4; passwd &#x8BBE;&#x7F6E; root &#x5BC6;&#x7801;&#x3002;<br />
-apt update #&#x66F4;&#x65B0;&#x7CFB;&#x7EDF;<br />
-apt install ssh -y #&#x5B89;&#x88C5; ssh</p><!-- Ezoic - wp_under_page_title - under_page_title --><div id="ezoic-pub-ad-placeholder-174" data-inserter-version="2" data-placement-location="under_page_title"></div><script data-ezoic="1">ezstandalone.cmd.push(function () { ezstandalone.showAds(174); });</script><!-- End Ezoic - wp_under_page_title - under_page_title -->
-<p>&#x7F16;&#x8F91; ssh &#x914D;&#x7F6E;&#x6587;&#x4EF6;</p>
-<pre id="hljs-item-4" class="corepress-code-pre hljs language-undefined">nano /etc/ssh/sshd_config</pre>
-<p>&#x6DFB;&#x52A0; (&#x6216;&#x8005;&#x4FEE;&#x6539;&#x539F;&#x6587;&#x4EF6;&#x5185;&#x7684;&#x914D;&#x7F6E;&#x5B57;&#x6BB5;&#x4E2D;&#x7684;) 2 &#x884C;</p>
-<table class="hljs-ln">
-<tbody>
-<tr>
-<td class="hljs-ln-line hljs-ln-code" data-line-number="1"><span class="hljs-string">PermitRootLogin</span> <span class="hljs-literal">yes</span></td>
-</tr>
-<tr>
-<td class="hljs-ln-line hljs-ln-code" data-line-number="2"><span class="hljs-string">PasswordAuthentication</span> <span class="hljs-literal">yes</span></td>
-</tr>
-</tbody>
-</table>
-<p>&#x751F;&#x6210;&#x4E3B;&#x673A;&#x5BC6;&#x94A5;</p>
-<pre id="hljs-item-6" class="corepress-code-pre hljs language-css">ssh-keygen -<span class="hljs-selector-tag">A</span></pre>
-<p>&#x542F;&#x7528; ssh &#x670D;&#x52A1;</p>
-<pre id="hljs-item-7" class="corepress-code-pre hljs language-sql">systemctl <span class="hljs-keyword">start</span> sshd</pre>
-<p>&#x81F3;&#x6B64;&#x670D;&#x52A1;&#x5668;&#x5DF2;&#x7ECF;&#x53EF;&#x4EE5;&#x8FDC;&#x7A0B; ssh &#x767B;&#x5F55;</p>
-<h2>&#x81EA;&#x5DF1;&#x5236;&#x4F5C; dd &#x5305;</h2>
-<p>&#x628A;&#x60F3;&#x8981;&#x4F5C;&#x4E3A;&#x955C;&#x50CF;&#x7684; arm &#x5F15;&#x5BFC;&#x76D8;&#x6302;&#x8F7D;&#x5230;&#x4E00;&#x4E2A;&#x5907;&#x7528;&#x673A;&#xFF08;&#x5EFA;&#x8BAE;&#x914D;&#x7F6E;&#x9AD8;&#x70B9;&#xFF0C;&#x901F;&#x5EA6;&#x5FEB;&#xFF09;</p>
-<p>&#x5907;&#x7528;&#x673A;&#x6267;&#x884C; dd if=/dev/sdb | gzip &gt; /root/ubuntu.img.gz &#x751F;&#x6210;&#x7684;&#x538B;&#x7F29;&#x5305;&#x5728;/root &#x76EE;&#x5F55;&#x4E0B;&#xFF0C;&#x65F6;&#x95F4;&#x5F88;&#x957F;&#x9700;&#x8981;&#x7B49;&#x5F85;</p>
-<p>dd &#x6062;&#x590D;&#x547D;&#x4EE4; gzip -dc /root/ubuntu.img.gz | dd of=/dev/sdb</p>
-<p>&nbsp;</p>
-</div>
-			    						    						    			<style>.erphpdown-box, .erphpdown-box + .article-custom-metas{display:block;}</style>			    					    		
-			    					    				    					    			<div class="article-copyright"><i class="icon icon-warning1"></i> 原文链接：<a href="https://jiemahao.com/oracle-cloud-recovery-guide/">https://jiemahao.com/oracle-cloud-recovery-guide/</a>，转载请注明出处。		    			</div>		            </div>
-		    			<div class="article-act">
-					<a href="javascript:;" class="article-zan" data-id="650"><i class="icon icon-zan"></i> <span>0</span></a>
-		</div>
-		            					<div class="article-shares"><a href="javascript:;" data-url="https://jiemahao.com/oracle-cloud-recovery-guide/" class="share-weixin"><i class="icon icon-weixin"></i></a><a data-share="qzone" class="share-qzone" data-url="https://jiemahao.com/oracle-cloud-recovery-guide/"><i class="icon icon-qzone"></i></a><a data-share="weibo" class="share-tsina" data-url="https://jiemahao.com/oracle-cloud-recovery-guide/"><i class="icon icon-weibo"></i></a><a data-share="qq" class="share-sqq" data-url="https://jiemahao.com/oracle-cloud-recovery-guide/"><i class="icon icon-qq"></i></a><a data-share="douban" class="share-douban" data-url="https://jiemahao.com/oracle-cloud-recovery-guide/"><i class="icon icon-douban"></i></a></div>	            </article>
-	            	            	            <nav class="article-nav">
-	                <span class="article-nav-prev">上一篇<br><a href="https://jiemahao.com/oracle-cloud-vps/" rel="prev">Oracle甲骨文云免费VPS注册及使用保姆级教程</a></span>
-	                <span class="article-nav-next">下一篇<br><a href="https://jiemahao.com/xboard-manual-install/" rel="next">拒绝 aaPanel 臃肿！1G1U 小鸡纯手工零面板硬核部署 Xboard 排坑指南</a></span>
-	            </nav>
-	            	            <div class="modown-ad" ><div id="ezoic-pub-ad-placeholder-154"></div>
-<script>
-    ezstandalone.cmd.push(function () {
-        ezstandalone.showAds(154);
-    });
-</script></div>	            <div class="single-related"><h3 class="related-title"><i class="icon icon-related"></i> 猜你喜欢</h3><div class="grids relateds clearfix"><div class="post grid"  data-id="673">
-    <div class="img">
-        <a href="https://jiemahao.com/backup-backblaze-b2/" title="VPS上数据库与网站文件定时自动备份到Backblaze B2教程" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/05/backup-backblaze-b2.jpg" class="thumb" alt="VPS上数据库与网站文件定时自动备份到Backblaze B2教程">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/backup-backblaze-b2/" title="VPS上数据库与网站文件定时自动备份到Backblaze B2教程" target="">VPS上数据库与网站文件定时自动备份到Backblaze B2教程</a></h3>
+    
+    <div class="highlight">
+    <p>挂载折腾坏了的实例的引导卷到同账号其他甲骨文实例。执行 lsblk 看看挂载的卷设备名，一般是 sdb,</p>
+    <p>1.1 救砖甲骨文 AMD 执行</p>
+    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+    <p>如果需要 Debian 12 系统，则执行</p>
+    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+    <p>1.2 救砖 甲骨文 ARM 执行</p>
+    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+    <p>如果需要 Debian 12 系统，则执行</p>
+    <pre><code>curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</code></pre>
+    <p>DD 过程大约 25 分钟。</p>
+    <p>2. 完成后分离卷挂载回原实例。启动实例。</p>
+    <p>3.点击"控制台连接"下级菜单的 启动"Cloud Shell 连接"。<br>
+    强制重启实例。<br>
+    看到实例启动后，使用用户名 root 密码空白登录实例。<br>
+    用命令 passwd 设置 root 密码。<br>
+    apt update #更新系统<br>
+    apt install ssh -y #安装 ssh</p>
+    <p>编辑 ssh 配置文件</p>
+    <pre><code>nano /etc/ssh/sshd_config</code></pre>
+    <p>添加 (或者修改原文件内的配置字段中的) 2 行</p>
+    <table>
+    <tbody>
+    <tr><td>PermitRootLogin yes</td></tr>
+    <tr><td>PasswordAuthentication yes</td></tr>
+    </tbody>
+    </table>
+    <p>生成主机密钥</p>
+    <pre><code>ssh-keygen -A</code></pre>
+    <p>启用 ssh 服务</p>
+    <pre><code>systemctl start sshd</code></pre>
+    <p>至此服务器已经可以远程 ssh 登录</p>
+    </div>
 
-                <div class="excerpt">
-对于任何站长来说，数据丢失都是一场灾难。虽然很多 WordPress 插件提供备份功能...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 2天前</span>        </div>
+    <h2>自己制作 dd 包</h2>
+    <p>把想要作为镜像的 arm 引导盘挂载到一个备用机（建议配置高点，速度快）</p>
+    <p>备用机执行 dd if=/dev/sdb | gzip &gt; /root/ubuntu.img.gz 生成的压缩包在/root 目录下，时间很长需要等待</p>
+    <p>dd 恢复命令 gzip -dc /root/ubuntu.img.gz | dd of=/dev/sdb</p>
+    </div>
 
-            </div>
+  <footer style="margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;color:#666;font-size:0.9rem">
+    <p>⚠️ 原文链接：<a href="https://jiemahao.com/oracle-cloud-recovery-guide/">https://jiemahao.com/oracle-cloud-recovery-guide/</a>，转载请注明出处。</p>
+  </footer>
+</article>
 
-        </div><div class="post grid"  data-id="668">
-    <div class="img">
-        <a href="https://jiemahao.com/woocommerce-nginx-microcaching/" title="极致加速：WooCommerce + Nginx 微缓存配置全攻略" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/04/woocommerce-nginx-microcaching.jpg" class="thumb" alt="极致加速：WooCommerce + Nginx 微缓存配置全攻略">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/woocommerce-nginx-microcaching/" title="极致加速：WooCommerce + Nginx 微缓存配置全攻略" target="">极致加速：WooCommerce + Nginx 微缓存配置全攻略</a></h3>
-
-                <div class="excerpt">
-本文旨在帮助新手在 Debian LEMP 环境下，为 WooCommerce 电商网站配置 Nginx 微...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 7天前</span>        </div>
-
-            </div>
-
-        </div><div class="post grid"  data-id="665">
-    <div class="img">
-        <a href="https://jiemahao.com/epusdt-install/" title="无需aapanel面板手动部署新版Epusdt 全流程指南" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/04/epusdt-install.jpg" class="thumb" alt="无需aapanel面板手动部署新版Epusdt 全流程指南">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/epusdt-install/" title="无需aapanel面板手动部署新版Epusdt 全流程指南" target="">无需aapanel面板手动部署新版Epusdt 全流程指南</a></h3>
-
-                <div class="excerpt">在不使用 aapanel 等面板的情况下，如何在一台 1G 内存的 Debian VPS 上，利用 Pos...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 1周前</span>        </div>
-
-            </div>
-
-        </div><div class="post grid"  data-id="662">
-    <div class="img">
-        <a href="https://jiemahao.com/woocommerce-debian-lemp/" title="纯手工搭建超快 WooCommerce 独立站环境 (Debian+ LEMP）" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/04/woocommerce-debian-lemp.jpg" class="thumb" alt="纯手工搭建超快 WooCommerce 独立站环境 (Debian+ LEMP）">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/woocommerce-debian-lemp/" title="纯手工搭建超快 WooCommerce 独立站环境 (Debian+ LEMP）" target="">纯手工搭建超快 WooCommerce 独立站环境 (Debian+ LEMP）</a></h3>
-
-                <div class="excerpt">很多新手在搭建 WordPress 和 WooCommerce 电商网站时，为了图方便会选择安装宝塔...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 3周前</span>        </div>
-
-            </div>
-
-        </div><div class="post grid"  data-id="659">
-    <div class="img">
-        <a href="https://jiemahao.com/xboard-node-install/" title="Docker部署 Xboard-Node 全攻略：从0到1保姆级教程" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/04/xboard-node-install.jpg" class="thumb" alt="Docker部署 Xboard-Node 全攻略：从0到1保姆级教程">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/xboard-node-install/" title="Docker部署 Xboard-Node 全攻略：从0到1保姆级教程" target="">Docker部署 Xboard-Node 全攻略：从0到1保姆级教程</a></h3>
-
-                <div class="excerpt">在构建高效、稳定的网络中继服务时，Xboard-Node扮演着“核心枢纽”的角色。它是基于...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 4周前</span>        </div>
-
-            </div>
-
-        </div><div class="post grid"  data-id="657">
-    <div class="img">
-        <a href="https://jiemahao.com/dujiao-next-install/" title="极致性能：1U1G VPS 手工部署 Dujiao-Next 实战教程" target="" rel="bookmark">
-        <img src="https://jiemahao.com/wp-content/themes/modown/static/img/thumbnail.png" data-src="https://jiemahao.com/wp-content/uploads/2026/04/dujiao-next-install.jpg" class="thumb" alt="极致性能：1U1G VPS 手工部署 Dujiao-Next 实战教程">
-                </a>
-            </div>
-    <div class="con">
-        <div class="cat"><a href="https://jiemahao.com/domain-host/" id="img-cat-6">域名主机</a></div>
-        
-        <h3 itemprop="name headline"><a itemprop="url" rel="bookmark" href="https://jiemahao.com/dujiao-next-install/" title="极致性能：1U1G VPS 手工部署 Dujiao-Next 实战教程" target="">极致性能：1U1G VPS 手工部署 Dujiao-Next 实战教程</a></h3>
-
-                <div class="excerpt">在内存仅有 1GB 的小鸡上运行 aaPanel（宝塔海外版）等面板，会瞬间吃掉 300MB+ 内...</div>
-        <div class="grid-meta">
-            <span class="time"><i class="icon icon-time"></i> 3周前</span>        </div>
-
-            </div>
-
-        </div></div></div>	            	            <div class="modown-ad" ><div id="ezoic-pub-ad-placeholder-153"></div>
-<script>
-    ezstandalone.cmd.push(function () {
-        ezstandalone.showAds(153);
-    });
-</script></div>	    	</div>
-	    </div>
-		<aside class="sidebar">
-	<div class="theiaStickySidebar">
-	
-	<div class="widget widget-postlist"><h3><i class="icon icon-posts"></i> 账号商店</h3><ul class="clearfix hasimg">        <li>
-                    <a href="https://jiemahao.com/telegram/" title="Telegram账号" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/08/telegram-account.jpg" class="thumb" alt="Telegram账号">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/telegram/" target="" title="Telegram账号">Telegram账号</a></h4>
-          <p class="meta">
-          	<span class="time">17小时前</span>          	          	<span class="price"><span class="fee"><i class="icon icon-money"></i> 37</span></span>          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/gmail-accounts-us/" title="老Gmail邮箱，老谷歌账号，油管账号" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/11/gmail-accounts-us.jpg" class="thumb" alt="老Gmail邮箱，老谷歌账号，油管账号">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/gmail-accounts-us/" target="" title="老Gmail邮箱，老谷歌账号，油管账号">老Gmail邮箱，老谷歌账号，油管账号</a></h4>
-          <p class="meta">
-          	<span class="time">3周前</span>          	          	<span class="price"><span class="fee"><i class="icon icon-money"></i> 20</span></span>          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/google-voice/" title="Google Voice号码，GV老号" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/06/google-voice-us-number.jpg" class="thumb" alt="Google Voice号码，GV老号">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/google-voice/" target="" title="Google Voice号码，GV老号">Google Voice号码，GV老号</a></h4>
-          <p class="meta">
-          	<span class="time">2026-03-26</span>          	          	<span class="price"><span class="fee"><i class="icon icon-money"></i> 96</span></span>          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/apple-id-us/" title="Apple ID,美区苹果ID,美国苹果账号" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2024/05/apple-id.png" class="thumb" alt="Apple ID,美区苹果ID,美国苹果账号">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/apple-id-us/" target="" title="Apple ID,美区苹果ID,美国苹果账号">Apple ID,美区苹果ID,美国苹果账号</a></h4>
-          <p class="meta">
-          	<span class="time">2026-03-24</span>          	          	<span class="price"><span class="fee"><i class="icon icon-money"></i> 26</span></span>          </p>
-                  </li>
-		</ul></div><div class="widget widget-text nopadding"><!-- Ezoic - sidebar_top - sidebar -->
-<div id="ezoic-pub-ad-placeholder-148"> </div>
-<!-- End Ezoic - sidebar_top - sidebar --></div><div class="widget widget-postlist"><h3><i class="icon icon-posts"></i> 相关文章</h3><ul class="clearfix hasimg">        <li>
-                    <a href="https://jiemahao.com/zoho-mail-ru-yandex/" title="5款免费国外域名邮箱Mail.ru，Yandex，Zoho ，25Mail.St ，Postale申请和使用教程" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/03/zoho-mail-ru-yandex-Yandex-Mail-1.jpg" class="thumb" alt="5款免费国外域名邮箱Mail.ru，Yandex，Zoho ，25Mail.St ，Postale申请和使用教程">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/zoho-mail-ru-yandex/" target="" title="5款免费国外域名邮箱Mail.ru，Yandex，Zoho ，25Mail.St ，Postale申请和使用教程">5款免费国外域名邮箱Mail.ru，Yandex，Zoho ，25Mail.St ，Postale申请和使用教程</a></h4>
-          <p class="meta">
-          	<span class="time">2023-03-29</span>          	          	          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/b-mobile/" title="B-Mobile日本手机卡可中国漫游" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/03/b-mobile-B-Mobile-1.png" class="thumb" alt="B-Mobile日本手机卡可中国漫游">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/b-mobile/" target="" title="B-Mobile日本手机卡可中国漫游">B-Mobile日本手机卡可中国漫游</a></h4>
-          <p class="meta">
-          	<span class="time">2023-03-29</span>          	          	          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/free-images-for-blogs/" title="非设计师，怎样为利基网站创作精美封面图片？" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/03/free-images-for-blogs-2a1d0-yYWUUVw.jpg" class="thumb" alt="非设计师，怎样为利基网站创作精美封面图片？">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/free-images-for-blogs/" target="" title="非设计师，怎样为利基网站创作精美封面图片？">非设计师，怎样为利基网站创作精美封面图片？</a></h4>
-          <p class="meta">
-          	<span class="time">2023-03-29</span>          	          	          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/recaptcha-v3-protect-from-browsing-with-bots/" title="如何使用reCAPTCHA v3来防止爬虫、采集及垃圾评论？" target="" rel="bookmark" class="img">
-		    <img src="https://cdn.jsdelivr.net/gh/clicocc/bw-wp-uploads@master/wp-content/uploads/2021/01/recaptcha-1.jpg" class="thumb" alt="如何使用reCAPTCHA v3来防止爬虫、采集及垃圾评论？">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/recaptcha-v3-protect-from-browsing-with-bots/" target="" title="如何使用reCAPTCHA v3来防止爬虫、采集及垃圾评论？">如何使用reCAPTCHA v3来防止爬虫、采集及垃圾评论？</a></h4>
-          <p class="meta">
-          	<span class="time">2023-03-29</span>          	          	          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/amazon-associates-program/" title="9个原因为什么不建议新手做亚马逊产品评论网站" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2023/03/amazon-associates-program-a6403-1sDOajf.jpg" class="thumb" alt="9个原因为什么不建议新手做亚马逊产品评论网站">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/amazon-associates-program/" target="" title="9个原因为什么不建议新手做亚马逊产品评论网站">9个原因为什么不建议新手做亚马逊产品评论网站</a></h4>
-          <p class="meta">
-          	<span class="time">2023-03-29</span>          	          	          </p>
-                  </li>
-		        <li>
-                    <a href="https://jiemahao.com/water-pressure-nozzle-attachment/" title="跨境电商汽车高压水枪配件独立站案例剖析" target="" rel="bookmark" class="img">
-		    <img src="https://jiemahao.com/wp-content/uploads/2024/07/water-pressure-nozzle-attachment.jpg" class="thumb" alt="跨境电商汽车高压水枪配件独立站案例剖析">
-		  </a>
-		  		            <h4><a href="https://jiemahao.com/water-pressure-nozzle-attachment/" target="" title="跨境电商汽车高压水枪配件独立站案例剖析">跨境电商汽车高压水枪配件独立站案例剖析</a></h4>
-          <p class="meta">
-          	<span class="time">2024-07-11</span>          	          	          </p>
-                  </li>
-		</ul></div><div class="widget widget-text nopadding"><!-- Ezoic - sidebar_middle - sidebar_middle -->
-<div id="ezoic-pub-ad-placeholder-149"> </div>
-<!-- End Ezoic - sidebar_middle - sidebar_middle --></div><div class="widget widget-commentlist"><h3><i class="icon icon-comments"></i> 网友评论</h3><div><div class="comment-item comment-10">
-				      <div class="postmeta">Hardy • 2023-09-09</div>
-				      <div class="sidebar-comments-comment">能验证Google Voice接码的号码成本比较高，建议直接买成品GV</div>
-				      <div class="sidebar-comments-title">
-				        <p>来源：<a href="https://jiemahao.com/get-usa-phone-number-from-google-voice/" target="">Google Voice美国电话号码注册教程2024</a></p>
-				      </div>
-				    </div><div class="comment-item comment-9">
-				      <div class="postmeta">Hardy • 2023-09-09</div>
-				      <div class="sidebar-comments-comment">此站长有美国实体电话号码能验证Google Voice接码？</div>
-				      <div class="sidebar-comments-title">
-				        <p>来源：<a href="https://jiemahao.com/get-usa-phone-number-from-google-voice/" target="">Google Voice美国电话号码注册教程2024</a></p>
-				      </div>
-				    </div></div></div><div class="widget widget-text nopadding"><!-- Ezoic - sidebar_bottom - sidebar_bottom -->
-<div id="ezoic-pub-ad-placeholder-150"> </div>
-<!-- End Ezoic - sidebar_bottom - sidebar_bottom --></div>	</div>	    
-</aside>	</div>
-</div>
-<footer class="footer">
-	<div class="container">
-	    	    	    <div class="copyright"><p>©CopyRight 2025 JIEMAHAO.COM Inc All Rights Reserved | <a href="https://jiemahao.com/about/" rel="noindex,nofollow">关于我们</a> | <a href="https://jiemahao.com/contact-us/" rel="noindex,nofollow">联系我们</a> | <a href="https://jiemahao.com/terms-of-use/" rel="noindex,nofollow">使用条款</a> | <a href="https://jiemahao.com/privacy-policy/" rel="noindex,nofollow">隐私政策</a> | <a href="https://jiemahao.com/community-policies/" rel="noindex,nofollow">平台管理规定</a></p>
-</div>
-	</div>
-</footer>
-
-
-
-
-
-
-<div class="sign">			
-	<div class="sign-mask"></div>			
-	<div class="sign-box">	
-			
-		<div class="sign-wrap">	
-			<div class="sign-tips"></div>			
-			<form id="sign-in">  
-			    <div class="form-item" style="text-align:center"><a href="https://jiemahao.com"><img class="logo-login" src="https://jiemahao.com/wp-content/uploads/2023/07/logo.svg" alt="接码号"></a></div>
-				<div class="form-item"><input type="text" name="user_login" class="form-control" id="user_login" placeholder="用户名/邮箱"><i class="icon icon-user"></i></div>			
-				<div class="form-item"><input type="password" name="password" class="form-control" id="user_pass" placeholder="密码"><i class="icon icon-lock"></i></div>		
-					
-				<div class="sign-submit">			
-					<input type="button" class="btn signinsubmit-loader" name="submit" value="登录">  			
-					<input type="hidden" name="action" value="signin">			
-				</div>			
-				<div class="sign-trans"><a href="https://jiemahao.com/login/?action=password&redirect_to=https://jiemahao.com/oracle-cloud-recovery-guide/" rel="nofollow" target="_blank">忘记密码？</a></div>		
-									
-			</form>	
-				
-							
-			<div class="sign-notice"></div>
-		</div>
-	</div>			
-</div>
-<script>
-	window._MBT = {uri: 'https://jiemahao.com/wp-content/themes/modown', child: 'https://jiemahao.com/wp-content/themes/modown-child', urc: '0', uru: '0', url:'https://jiemahao.com', urg: '0', usr: 'https://jiemahao.com/user/', roll: [], admin_ajax: 'https://jiemahao.com/wp-admin/admin-ajax.php', erphpdown: 'https://jiemahao.com/wp-content/plugins/erphpdown/', image: '0.6316', hanimated: '1', fancybox: '0', anchor: '0', loading: '', nav: '0', iframe: '1', video_full: '0',tuan: '0',down_fixed: '0', post_h3_nav: '0'};</script>
-<script>window._ERPHPDOWN = {"uri":"https://jiemahao.com/wp-content/plugins/erphpdown", "payment": "1", "wppay": "link", "tuan":"", "danmu": "0", "author": "mobantu"}</script>
-<!-- Ezoic - wp_native_bottom - native_bottom --><div id="ezoic-pub-ad-placeholder-634" data-inserter-version="-1" data-placement-location="native_bottom"></div><script data-ezoic="1">ezstandalone.cmd.push(function () { ezstandalone.showAds(634); });</script><!-- End Ezoic - wp_native_bottom - native_bottom --><!-- Ezoic - wp_bottom_of_page - bottom_of_page --><div id="ezoic-pub-ad-placeholder-175" data-inserter-version="-1" data-placement-location="bottom_of_page"></div><script data-ezoic="1">ezstandalone.cmd.push(function () { ezstandalone.showAds(175); });</script><!-- End Ezoic - wp_bottom_of_page - bottom_of_page --><script type="text/javascript" id="erphpdown-js-extra">
-/* <![CDATA[ */
-var _ERPHP = {"ajaxurl":"https:\/\/jiemahao.com\/wp-admin\/admin-ajax.php"};
-/* ]]> */
-</script>
-<script type="text/javascript" src="https://jiemahao.com/wp-content/plugins/erphpdown/static/erphpdown.js?ver=17.4" id="erphpdown-js"></script>
-<script type="text/javascript" src="https://jiemahao.com/wp-content/themes/modown/static/js/lib.js?ver=9.6" id="modown-lib-js"></script>
-<script type="text/javascript" src="https://jiemahao.com/wp-content/themes/modown/static/js/fancybox.min.js?ver=3.3.5" id="modown-fancybox-js"></script>
-<script type="text/javascript" src="https://jiemahao.com/wp-content/themes/modown/static/js/base.js?ver=9.6" id="modown-base-js"></script>
-<script>MOBANTU.init({ias: 0, lazy: 1, plazy: 0, water: 0, mbf: 0, mpf: 0, mpfp: 0});</script>
-<div class="analysis"><script async src="https://www.googletagmanager.com/gtag/js?id=G-MY9PVJ9GWG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MY9PVJ9GWG');
-</script></div>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f6a0014263449baaba5f6ef48c6c787","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body></html>
+</body>
+</html>
