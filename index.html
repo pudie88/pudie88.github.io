@@ -4,24 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🦋 扑蝶的博客</title>
-  <!-- 蝴蝶紫主题 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
-  <style>
-    :root {
-      --theme-color: #8e44ad;
-      --theme-color-light: #9b59b6;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --base-background-color: #1a1a2e;
-        --base-color: #eaeaea;
-      }<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🦋 扑蝶的博客</title>
+  
+  <!-- 深色主题 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  
+  <!-- 自定义橙色主题 -->
   <style>
     :root {
       --theme-color: #e8914a;
@@ -58,7 +45,7 @@
       border-radius: 0 6px 6px 0;
     }
 
-    /* 表格 */
+    /* 表格隔行变色 */
     .markdown-section table tr:nth-child(2n) {
       background: #242018;
     }
@@ -72,7 +59,7 @@
       padding: 1px 5px;
     }
 
-    /* 滚动条 */
+    /* 滚动条美化 */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #1c1917; }
     ::-webkit-scrollbar-thumb { background: #3d3530; border-radius: 3px; }
@@ -81,23 +68,31 @@
 </head>
 <body>
   <div id="app"></div>
+  
   <script>
     window.$docsify = {
       name: '🦋 扑蝶',
+      // ✅ repo 已移除，右上角缎带消失
       loadSidebar: true,
       auto2top: true,
       subMaxLevel: 3,
+      
+      // 搜索
       search: {
         placeholder: '🔍 搜索文章...',
-        noData: '没有找到相关内容',
+        noData: '🦋 没找到相关内容～',
         depth: 4
       },
+      
+      // 上下篇导航
       pagination: {
         previousText: '← 上一篇',
         nextText: '下一篇 →',
         crossChapter: true,
         crossChapterText: true
       },
+      
+      // 字数统计
       count: {
         countable: true,
         fontsize: '0.9em',
@@ -106,47 +101,19 @@
       }
     }
   </script>
-
-  <!-- 核心 -->
+  
+  <!-- 核心库 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  
   <!-- 插件 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-count/dist/countable.min.js"></script>
-  <!-- 代码高亮 -->
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  
+  <!-- 代码高亮（按需加载） -->
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
-</body>
-</html>
-
-    }
-    .markdown-section h1, .markdown-section h2 {
-      background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  </style>
-</head>
-<body>
-  <div id="app"></div>
-  <script>
-    window.$docsify = {
-      name: '🦋 扑蝶',
-      // repo: 'pudie88/pudie88.github.io',  // ✅ 已注释，右上角缎带消失
-      loadSidebar: true,
-      auto2top: true,
-      search: {
-        placeholder: '🔍 搜索技术/标签...',
-        depth: 4
-      }
-    }
-  </script>
-  <!-- 核心库 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
 </body>
 </html>
