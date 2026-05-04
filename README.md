@@ -4,7 +4,6 @@
 这里没有长篇大论，只有真实踩坑与可复现的代码。
 
 ##  快速跳转
--  [技术笔记](/posts/README.md)
-- 👤 [关于我](/about.md)
-
-> 💡 博客由 `GitHub Pages + Docsify` 驱动，持续更新中…
+- 📝 [技术笔记](/posts/README.md)
+  - [甲骨文云救砖](/posts/甲骨文云忘记密码救砖.md)  
+  - [官方固件从零刷入 U-Boot 教程](/posts/2026-05-04-360-V6-官方固件从零刷入U-Boot教程.md)
