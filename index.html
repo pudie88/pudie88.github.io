@@ -3,216 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="扑蝶的技术博客 - 记录踩坑与成长">
   <title>🦋 扑蝶的博客</title>
-  
-  <!-- Docsify Themeable 主题 -->
+  <!-- 核心主题 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
-  
-  <!-- 自定义样式 -->
   <style>
     :root {
-      /* 蝴蝶紫主色调 */
       --theme-color: #8e44ad;
       --theme-color-light: #9b59b6;
       --heading-color: #2c3e50;
       --link-color: #8e44ad;
-      --link-color--hover: #9b59b6;
-      
-      /* 代码块 */
-      --code-theme-background: #f8f8f8;
-      --code-theme-comment: #998;
-      --code-theme-function: #905;
-      --code-theme-keyword: #07a;
-      --code-theme-string: #d14;
-      
-      /* 侧边栏 */
-      --sidebar-width: 300px;
-      --sidebar-nav-link-font-weight: 400;
-      --sidebar-nav-link-border-width: 0 0 0 3px;
+      --sidebar-width: 280px;
     }
-
-    /* 暗黑模式适配 */
     @media (prefers-color-scheme: dark) {
       :root {
         --base-background-color: #1a1a2e;
         --base-color: #eaeaea;
         --heading-color: #fff;
-        --code-theme-background: #2d2d2d;
       }
     }
-
-    /* 标题渐变效果 */
-    .markdown-section h1,
-    .markdown-section h2 {
+    .markdown-section h1, .markdown-section h2 {
       background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* 链接悬停动画 */
-    .markdown-section a {
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .markdown-section a:hover {
-      transform: translateY(-2px);
-    }
-
-    /* 代码块圆角 + 阴影 */
-    .markdown-section pre {
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(142, 68, 173, 0.15);
-    }
-
-    /* 侧边栏激活项 */
-    .sidebar-nav li.active > a {
-      border-left-color: #8e44ad;
-      font-weight: 600;
-      background: linear-gradient(90deg, rgba(142,68,173,0.1) 0%, transparent 100%);
-    }
-
-    /* 封面页美化 */
-    .cover {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .cover h1 {
-      color: #fff !important;
-      -webkit-text-fill-color: #fff !important;
-    }
-
-    /* 移动端优化 */
-    @media screen and (max-width: 768px) {
-      :root {
-        --sidebar-width: 280px;
-      }
-    }
-
-    /* 滚动条美化 */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #8e44ad;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #9b59b6;
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
-  
   <script>
     window.$docsify = {
       name: '🦋 扑蝶',
       repo: 'pudie88/pudie88.github.io',
-      homepage: 'README.md',
       loadSidebar: true,
-      loadNavbar: false,
-      coverpage: false,
       auto2top: true,
-      maxLevel: 3,
-      subMaxLevel: 2,
-      
-      // 搜索配置
-      search: {
-        placeholder: '🔍 搜索技术/标签...',
-        noData: '😅 没找到相关内容～',
-        depth: 4
-      },
-      
-      // 代码复制
-      copyCode: {
-        buttonText: '📋 复制代码',
-        errorText: '❌ 复制失败',
-        successText: '✅ 复制成功！'
-      },
-      
-      // 字数统计
-      count: {
-        countable: true,
-        fontsize: '0.9em',
-        color: 'rgb(142, 68, 173)',
-        language: 'chinese',
-        isExpected: true
-      },
-      
-      // 分页导航
-      pagination: {
-        previousText: '← 上一篇',
-        nextText: '下一篇 →',
-        crossChapter: true,
-        crossChapterText: true
-      },
-      
-      // 图片缩放
-      mediumZoom: {
-        margin: 24,
-        background: 'rgba(0,0,0,0.5)',
-        scrollOffset: 40
-      },
-      
-      // 插件：自动暗黑模式
-      plugins: [
-        function(hook, vm) {
-          // 检测系统暗黑模式
-          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTimeout(() => {
-              const link = document.querySelector('link[href*="docsify-themeable"]');
-              if (link) {
-                link.href = 'https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css';
-              }
-            }, 100);
-          }
-          
-          // 文章末尾添加信息
-          hook.afterEach(function(html) {
-            const url = 'https://github.com/pudie88/pudie88.github.io/edit/main/' + vm.route.file;
-            const footer = `
-              <hr>
-              <p style="text-align: center; color: #8e44ad; font-size: 0.9em;">
-                🦋 发现错误？<a href="${url}" target="_blank">点此改进此文</a> | 
-                由 <a href="https://docsify.js.org" target="_blank">Docsify</a> 驱动
-              </p>
-            `;
-            return html + footer;
-          });
-        }
-      ]
+      search: { placeholder: '🔍 搜索技术/标签...' }
     }
   </script>
-  
   <!-- 核心脚本 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  
-  <!-- 插件 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-count@latest/dist/countable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@latest/dist/docsify-pagination.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-medium-zoom@1/dist/docsify-medium-zoom.min.js"></script>
-  
-  <!-- 代码高亮 -->
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
 </body>
 </html>
