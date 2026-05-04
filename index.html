@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>甲骨文云新版界面救砖教程 | AMD/ARM实例DD失败失联救援</title>
+    <!-- 使用优雅的字体与配色 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #f5f7fc;
+            color: #1e293b;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #eef2ff;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #1e40af;
+            margin-top: 8px;
+        }
+        .badge i {
+            font-size: 0.9rem;
+        }
+        .update-date {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5b6e8c;
+        }
+
+        /* 卡片布局 */
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            border: 1px solid #eef2f6;
+        }
+        .card:hover {
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08);
+        }
+        .card-header {
+            padding: 1.5rem 2rem;
+            background: #fafcff;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .card-header i {
+            font-size: 1.8rem;
+            color: #2a5298;
+        }
+        .card-header h2 {
+            font-weight: 600;
+            font-size: 1.6rem;
+            letter-spacing: -0.2px;
+        }
+        .card-header .tag {
+            background: #e6f0ff;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1960d4;
+            margin-left: auto;
+        }
+        .card-body {
+            padding: 1.8rem 2rem;
+        }
+        .card-body h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-body h3:first-of-type {
+            margin-top: 0;
+        }
+        .card-body p {
+            margin-bottom: 1rem;
+            color: #2d3a4b;
+        }
+        .note {
+            background: #fefce8;
+            border-left: 5px solid #eab308;
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+            margin: 1.2rem 0;
+            font-size: 0.9rem;
+        }
+        .warning {
+            background: #fff1f0;
+            border-left: 5px solid #dc2626;
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+            margin: 1.2rem 0;
+        }
+        .success {
+            background: #ecfdf5;
+            border-left: 5px solid #10b981;
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+        }
+        code, .code-block {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .code-block {
+            display: block;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: #0f172a;
+            border-radius: 14px;
+            line-height: 1.45;
+        }
+        .copy-btn {
+            background: #334155;
+            border: none;
+            color: white;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            float: right;
+            margin-top: 0px;
+        }
+        .copy-btn:hover {
+            background: #3b82f6;
+        }
+        hr {
+            margin: 1.5rem 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        .method-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+        .method-card {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 1.2rem;
+            border: 1px solid #dee4ed;
+        }
+        .table-compare {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f8fafc;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .table-compare th, .table-compare td {
+            text-align: left;
+            padding: 12px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .table-compare th {
+            background: #eef2ff;
+            font-weight: 600;
+        }
+        @media (max-width: 760px) {
+            .card-header, .card-body {
+                padding: 1.2rem;
+            }
+            .card-header h2 {
+                font-size: 1.3rem;
+            }
+            .method-grid {
+                flex-direction: column;
+            }
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #6c7a91;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+        }
+        .fa, .fas, .far {
+            margin-right: 4px;
+        }
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            margin: 1rem 0 1rem 0;
+        }
+        .step-list li {
+            counter-increment: step;
+            margin-bottom: 0.8rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        .step-list li::before {
+            content: counter(step);
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            width: 22px;
+            height: 22px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🛡️ 甲骨文云 · 新版界面救砖完全手册</h1>
+        <div class="badge">
+            <i class="fas fa-microchip"></i> <span>AMD / ARM 通用 | DD失败 · 失联救援</span>
+        </div>
+        <div class="update-date"><i class="far fa-calendar-alt"></i> 2026-03-31 · 基于新版控制台界面撰写</div>
+    </div>
+
+    <!-- 简介卡片 -->
+    <div class="card">
+        <div class="card-body">
+            <p>在折腾甲骨文云（Oracle Cloud）时，使用一键DD脚本导致系统崩溃、SSH无法连接（俗称“变砖”）是常见问题。由于官方控制台频繁更新，旧教程大多失效。<strong>本教程针对最新版界面，提供两种最可靠的救援方案</strong>，让失联实例原地复活。</p>
+            <div class="success">
+                <i class="fas fa-check-circle"></i> <strong>核心原理</strong>：Oracle Cloud 的引导卷是可分离的虚拟硬盘，通过替换引导卷或挂载到其他实例重灌系统，即可恢复。
+            </div>
+        </div>
+    </div>
+
+    <!-- 方案对比简明表格 -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-balance-scale"></i>
+            <h2>方法对比 · 快速选择</h2>
+            <div class="tag">选对方法事半功倍</div>
+        </div>
+        <div class="card-body">
+            <table class="table-compare">
+                <thead>
+                    <tr><th>救援方法</th><th>适用场景</th><th>限制/注意事项</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>🔁 官方替换引导卷</strong></td><td>免费用户总容量＜200GB，想重装官方系统且不删实例</td><td>不支持换发行版（如Oracle Linux→Ubuntu）；不可超过200GB配额</td></tr>
+                    <tr><td><strong>💾 挂载硬盘DD救援</strong></td><td>所有场景，尤其容量超限、跨发行版、自定义镜像</td><td>需要同账号另一台正常实例（可临时创建免费的）</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 方法一：官方重装法 -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-sync-alt"></i>
+            <h2>方法一 · 官方替换引导卷</h2>
+            <div class="tag">无需额外实例 | 官方原生</div>
+        </div>
+        <div class="card-body">
+            <p><i class="fas fa-dragon"></i> <strong>原理</strong>：利用Oracle云原生功能，直接替换引导卷镜像，元数据注入root密码/公钥，快速恢复纯净系统。</p>
+            
+            <h3><i class="fas fa-list-ol"></i> 操作步骤</h3>
+            <ul class="step-list">
+                <li>进入失联实例详情页 → 顶部【更多操作】或下滑至【引导卷】区域 → 点击 <strong>“替换引导卷”</strong>。</li>
+                <li><strong>填写映像OCID</strong>：点击实例现有的引导卷 → 进入关联的“映像”详情 → 复制OCID（格式如 ocid1.image.oc1...）→ 粘贴到“输入映像OCID”框内。</li>
+                <li><strong>保留引导卷？</strong> 一般不勾选（除非想保留当前损坏的系统作备份）。</li>
+                <li><strong>高级选项（必看！）</strong> 展开【高级选项】→ 【元数据】→ 名称填写 <code>user_data</code>，值填写下方脚本的 <strong>Base64编码</strong>（用于自动设置root密码/开启SSH）。</li>
+            </ul>
+            <div class="note">
+                <i class="fas fa-key"></i> <strong>注入脚本（Base64加密前的原始内容）</strong>：<br>
+                <div class="code-block" id="script-block">
+#!/bin/bash<br>
+echo root:你的新密码 | chpasswd root<br>
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config<br>
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config<br>
+rm -rf /etc/ssh/sshd_config.d/* && rm -rf /etc/ssh/ssh_config.d/*<br>
+/etc/init.d/ssh* restart
+                </div>
+                <button class="copy-btn" onclick="copyText('script-block')"><i class="far fa-copy"></i> 复制脚本原文</button>
+                <div style="clear:both"></div>
+                <p style="margin-top:8px">🔐 记得将“你的新密码”改为复杂密码，然后用任意在线Base64工具编码后填入<code>user_data</code>值。</p>
+            </div>
+            <p>点击【保存】后，引导卷会经历“分离 → 附加”状态变更，等待3-5分钟，实例自动启动，即可用新密码SSH登录。</p>
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle"></i> <strong>免费账户限制</strong>：所有引导卷总容量不得超过200GB，若已开满4台AMD（每台47G）则不适用此方法，请使用方法二。
+            </div>
+        </div>
+    </div>
+
+    <!-- 方法二：挂载硬盘救援法 (核心内容) -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-hdd"></i>
+            <h2>方法二 · 分离硬盘 + 挂载DD救援</h2>
+            <div class="tag">万能方案 | 无容量限制</div>
+        </div>
+        <div class="card-body">
+            <p><i class="fas fa-tools"></i> 将“变砖”实例的引导卷拆下，挂载到另一台正常实例上，写入新系统镜像后再装回。该方式不受200GB限制，也支持跨发行版。</p>
+            
+            <h3><i class="fas fa-step-forward"></i> 详细流程</h3>
+            <p><strong>① 准备救援实例</strong>：同账号内必须有一台运行中的Linux实例（临时新建免费实例即可，架构最好与失联实例相同）。</p>
+            <p><strong>② 停止失联实例</strong>（注意是“停止”，不是终止），然后进入【引导卷】→ 点击右侧菜单 → <strong>分离</strong>。</p>
+            <p><strong>③ 挂载到救援实例</strong>：导航至【存储】→【块存储卷】→ 找到刚才分离的引导卷（类型显示“引导卷”）→ 点击【附加到实例】→ 选择救援实例，附件类型选 <strong>半虚拟化</strong> → 确认。</p>
+            <p><strong>④ SSH登录救援实例，识别设备名</strong>：执行 <code>lsblk</code> 查看新挂载的磁盘，通常为 <code>/dev/sdb</code>（ARM也可能为/dev/sdc或nvme设备）。<strong>务必确认大小（一般为50G）</strong>，避免写错系统盘。</p>
+
+            <h3><i class="fas fa-cloud-download-alt"></i> 下载并DD官方纯净系统（推荐）</h3>
+            <p>根据你的失联实例架构选择对应命令（可在救援实例后台执行，建议使用screen防止断开）:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <i class="fab fa-linux"></i> <strong>🔵 AMD (x86_64) 救砖 - Debian 12</strong>
+                    <div class="code-block" id="cmd-amd">curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</div>
+                    <button class="copy-btn" onclick="copyText('cmd-amd')">复制命令</button>
+                </div>
+                <div class="method-card">
+                    <i class="fab fa-linux"></i> <strong>🟢 ARM (arm64) 救砖 - Debian 12</strong>
+                    <div class="code-block" id="cmd-arm">curl -Lo- "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-arm64.tar.xz" | tar -xJO | dd of=/dev/sdb bs=1M</div>
+                    <button class="copy-btn" onclick="copyText('cmd-arm')">复制命令</button>
+                </div>
+            </div>
+            <div class="note">
+                <i class="fas fa-hourglass-half"></i> DD过程大约20~30分钟。如果设备名不是<code>/dev/sdb</code>，请替换为实际名称（如<code>/dev/sdc</code>）。
+            </div>
+
+            <h3><i class="fas fa-bolt"></i> 快速DD包（第三方救援包，体积小速度更快）</h3>
+            <p>适用于ARM架构，救援包较小（约3~10分钟恢复）：</p>
+            <div class="code-block" id="fast-arm">wget --no-check-certificate https://github.com/MIKU-N/OracleBackup/raw/main/dabian.sdb.gz?download -O debian10.img.gz<br>gzip -dc debian10.img.gz | dd of=/dev/sdb</div>
+            <button class="copy-btn" onclick="copyText('fast-arm')">复制快速DD命令</button>
+            <p style="margin-top: 6px;">默认用户名<code>root</code> 密码 <code>10086.fit</code> 。使用后建议立即修改密码。</p>
+
+            <h3><i class="fas fa-flag-checkered"></i> ⑤ 收尾工作</h3>
+            <p>等待DD执行完毕（可通过<code>watch -n 5 pkill -USR1 ^dd$</code> 监控进度）。完成后回到控制台：</p>
+            <ul>
+                <li>【存储】→ 【块存储卷】→ 将该引导卷从救援实例<strong>分离</strong>。</li>
+                <li>回到原失联实例详情页 → 【引导卷】→ 【附加块存储卷】→ 选择刚刚处理过的引导卷重新挂载。</li>
+                <li>启动原实例，尝试SSH连接。</li>
+            </ul>
+            <div class="success">
+                <i class="fas fa-plug"></i> <strong>若仍无法SSH：</strong> 使用“控制台连接” → “启动Cloud Shell连接” 进入实例，运行 <code>passwd root</code> 设置密码，编辑 <code>/etc/ssh/sshd_config</code> 开启PermitRootLogin和PasswordAuthentication，执行 <code>systemctl restart sshd</code> 即可。
+            </div>
+        </div>
+    </div>
+
+    <!-- 额外技巧：自己制作DD包 & 卡Grub解决 -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-cogs"></i>
+            <h2>高阶技巧 & 常见问题</h2>
+        </div>
+        <div class="card-body">
+            <h3><i class="fas fa-archive"></i> 如何自制DD镜像包？</h3>
+            <p>将你想备份的ARM/AMD引导卷挂载到一台配置较高的备用实例上，执行：</p>
+            <div class="code-block">dd if=/dev/sdb | gzip > /root/backup.img.gz</div>
+            <p>恢复时使用 <code>gzip -dc backup.img.gz | dd of=/dev/sdb</code> 即可，方便日后批量部署。</p>
+            
+            <h3><i class="fas fa-bug"></i> DD后卡Grub / 无法引导怎么办？</h3>
+            <p>可尝试在救援实例中<strong>格式化引导卷分区表再DD</strong>（先<code>dd if=/dev/zero of=/dev/sdb bs=1M count=100</code> 清引导区），然后重新写入系统镜像。或者使用 <code>bash InstallNET.sh</code> 脚本修复引导。</p>
+            <div class="code-block">wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x InstallNET.sh<br>bash InstallNET.sh -debian 12 -pwd '你的新密码'</div>
+            
+            <h3><i class="fas fa-question-circle"></i> 免费账号超过200G怎么办？</h3>
+            <p>务必使用【方法二】挂载救援模式，删除失联引导卷内容并重灌系统。也可以考虑升级付费账户或清理其他实例的多余引导卷。</p>
+        </div>
+    </div>
+
+    <!-- 官方资源列表 / 救援包清单 -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-link"></i>
+            <h2>镜像 & 救援包仓库</h2>
+        </div>
+        <div class="card-body">
+            <p>以下为经过社区验证的救援包（来源可靠，可应急使用）：</p>
+            <ul>
+                <li><strong>Ubuntu 20.04 ARM64 完整救援包</strong> (约46G，耗时1h+): <code>wget https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.arm.img.gz</code> 密码 <code>CNBoy.org</code></li>
+                <li><strong>Ubuntu 20.04 AMD64 完整救援包</strong>: <code>wget https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/Ubuntu20.04.amd.img.gz</code> 密码 <code>CNBoy.org</code></li>
+                <li><strong>Debian 10 ARM 精简救援包</strong> (仅3G，快速恢复): <code>wget https://github.com/honorcnboy/BlogDatas/releases/download/OracleRescueKit/dabian10.arm.img.gz</code> 密码 <code>10086.fit</code></li>
+            </ul>
+            <div class="note">
+                <i class="fas fa-shield-alt"></i> 所有第三方DD包使用后请及时修改默认密码，并检查SSH配置。
+            </div>
+        </div>
+    </div>
+
+    <!-- 最后结语及免责 -->
+    <footer>
+        <i class="far fa-comments"></i> 本教程基于甲骨文云2026年新版控制台整理，经社区验证有效。操作前建议备份重要数据，因操作失误导致的数据丢失需自行承担风险。<br>
+        <i class="fas fa-code-branch"></i> 喜欢本教程？欢迎分享给需要的朋友 · 持续更新救援方案
+    </footer>
+</div>
+
+<script>
+    function copyText(elementId) {
+        const codeElement = document.getElementById(elementId);
+        let textToCopy = "";
+        if (codeElement.innerText) {
+            textToCopy = codeElement.innerText;
+        } else {
+            textToCopy = codeElement.textContent;
+        }
+        // 移除可能的干扰按钮标识
+        textToCopy = textToCopy.replace(/复制命令|复制脚本原文|复制快速DD命令/g, '').trim();
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // 临时弹窗提示
+            const btn = document.querySelector(`button[onclick="copyText('${elementId}')"]`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+        }).catch(err => {
+            alert("无法复制: " + err);
+        });
+    }
+</script>
+</body>
+</html>
