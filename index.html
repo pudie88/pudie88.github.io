@@ -1,70 +1,45 @@
-<script>
-  window.$docsify = {
-    name: '🦋 扑蝶',
-    // repo: 'pudie88/pudie88.github.io',  // <-- 删掉或注释掉这行，右上角链接就消失了
-    loadSidebar: true,
-    loadNavbar: false,
-    coverpage: false,
-    auto2top: true,
-    maxLevel: 3,
-    subMaxLevel: 2,
-    
-    search: {
-      placeholder: '🔍 搜索技术/标签...',
-      noData: '😅 没找到相关内容～',
-      depth: 4
-    },
-    
-    copyCode: {
-      buttonText: '📋 复制代码',
-      errorText: ' 复制失败',
-      successText: '✅ 复制成功！'
-    },
-    
-    count: {
-      countable: true,
-      fontsize: '0.9em',
-      color: 'rgb(142, 68, 173)',
-      language: 'chinese',
-      isExpected: true
-    },
-    
-    pagination: {
-      previousText: '← 上一篇',
-      nextText: '下一篇 →',
-      crossChapter: true,
-      crossChapterText: true
-    },
-    
-    mediumZoom: {
-      margin: 24,
-      background: 'rgba(0,0,0,0.5)',
-      scrollOffset: 40
-    },
-    
-    plugins: [
-      function(hook, vm) {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          setTimeout(() => {
-            const link = document.querySelector('link[href*="docsify-themeable"]');
-            if (link) {
-              link.href = 'https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css';
-            }
-          }, 100);
-        }
-        
-        hook.afterEach(function(html) {
-          const url = 'https://github.com/pudie88/pudie88.github.io/edit/main/' + vm.route.file;
-          const footer = `
-            <hr>
-            <p style="text-align: center; color: #8e44ad; font-size: 0.9em;">
-              🦋 发现错误？<a href="${url}" target="_blank">点此改进此文</a> | 
-              由 <a href="https://docsify.js.org" target="_blank">Docsify</a> 驱动
-            </p>
-          `;
-          return html + footer;
-        });
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦋 扑蝶的博客</title>
+  <!-- 蝴蝶紫主题 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <style>
+    :root {
+      --theme-color: #8e44ad;
+      --theme-color-light: #9b59b6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --base-background-color: #1a1a2e;
+        --base-color: #eaeaea;
       }
-    ]
-  }
-</script>
+    }
+    .markdown-section h1, .markdown-section h2 {
+      background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '🦋 扑蝶',
+      // repo: 'pudie88/pudie88.github.io',  // ✅ 已注释，右上角缎带消失
+      loadSidebar: true,
+      auto2top: true,
+      search: {
+        placeholder: '🔍 搜索技术/标签...',
+        depth: 4
+      }
+    }
+  </script>
+  <!-- 核心库 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+</body>
+</html>
