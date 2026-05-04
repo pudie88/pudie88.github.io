@@ -1,0 +1,122 @@
+360 V6 官方固件从零刷入 U-Boot 教程
+U 盘本地版 · 无需 HFS 服务器 · 适合零基础用户
+很多朋友在刷 360 V6 时，由于网络环境问题，用 HFS 经常下载失败。今天分享一个最稳妥的方法：直接插 U 盘刷机。本教程涵盖从开启官方 Telnet 权限到写入 U-Boot 的完整流程，操作简单，无需搭建任何服务器环境。
+
+一、准备工作
+1. U 盘准备
+准备一个格式为 FAT32 的 U 盘，容量 1GB 以上即可。
+
+2. 文件准备
+将以下三个文件放入 U 盘根目录：
+•360_v6_jd_telnetd_ctrl_app_nda_signed.opk  —— 开启 Telnet 的官方补丁
+•360v6-mibib.bin  —— 分区表文件
+•uboot-qihoo-v6.bin  —— U-Boot 底层文件
+
+3. 硬件连接
+将 U 盘插入路由器的 USB 接口，确保接触良好。
+
+二、开启 Telnet 功能
+360 V6 官方固件默认关闭 Telnet，需要通过官方插件漏洞将其开启：
+1.登录路由器后台，默认地址通常为 192.168.0.1
+2.进入「功能插件」或「高级设置」页面
+3.找到「离线安装插件」（或「手动上传更新」），上传 U 盘中的 360_v6_jd_telnetd_ctrl_app_nda_signed.opk 文件
+4.安装完成后，路由器 Telnet 权限即正式开启
+
+三、Telnet 连接与 U 盘挂载
+1. 连接路由器
+在电脑端打开终端（CMD 或 PowerShell），输入：
+
+telnet 192.168.0.1 23
+
+2. 登录凭据
+•用户名：root
+•密　码：telnetdebug
+
+⚠️  凭据说明：  以上为 360 V6 常见固件的默认凭据。若登录失败，请根据您的具体固件版本号搜索对应密码，不同小版本可能有所不同。
+
+3. 确认并挂载 U 盘
+路由器固件不一定会自动挂载 U 盘，请按以下步骤操作：
+
+① 确认系统是否识别到 U 盘设备：
+ls /dev/sd*
+
+② 查看是否已自动挂载：
+ls /mnt
+
+③ 若未自动挂载，手动挂载：
+mkdir -p /mnt/usb
+mount /dev/sda1 /mnt/usb
+
+💡  提示：  如果 /dev/sda1 不存在，尝试 /dev/sda 或 ls /dev/sd* 查看实际设备名。
+
+4. 将文件复制到临时目录
+将 U 盘中的 .bin 文件拷贝到 /tmp（根据实际挂载路径修改）：
+
+cd /tmp
+cp /mnt/usb/*.bin /tmp/
+# 验证文件已到位
+ls -lh /tmp/*.bin
+
+四、核心刷机步骤
+步骤 1：验证 mtd 工具可用
+360 V6 固件通常自带 mtd 工具，但先确认一下：
+
+which mtd
+
+若命令无输出，则使用备用方案 dd 写入（见步骤 3 备注）。
+
+步骤 2：核对分区表（必做）
+执行以下命令，查看当前分区布局：
+
+cat /proc/mtd
+
+对照输出，找到以下分区对应的实际编号（各固件版本可能不同）：
+•名称为 mibib 的分区  →  记下其编号，如 mtd1
+•名称为 u-boot 或相关引导分区  →  记下其编号，如 mtd13、mtd14
+
+⚠️  重要：  后续命令中的 mtd1 / mtd13 / mtd14 均为示例编号，请务必替换为您自己 cat /proc/mtd 输出中的实际编号，切勿照抄！
+
+步骤 3：备份原始分区（强烈建议）
+写入前先备份原始数据，万一写错还有退路：
+
+# 备份分区表（mtdX 替换为您的实际编号）
+dd if=/dev/mtd1 of=/tmp/mibib_backup.bin
+
+# 备份 U-Boot 分区
+dd if=/dev/mtd13 of=/tmp/uboot_backup_mtd13.bin
+dd if=/dev/mtd14 of=/tmp/uboot_backup_mtd14.bin
+
+💡  建议：  将备份文件也复制到 U 盘保存，以防路由器重启后 /tmp 内容丢失。
+      cp /tmp/*_backup.bin /mnt/usb/
+
+步骤 4：执行写入
+确认分区编号无误、备份完成后，依次执行（mtdX 替换为实际编号）：
+
+① 更新分区表：
+mtd write /tmp/360v6-mibib.bin /dev/mtd1
+
+② 双分区写入 U-Boot（确保引导安全）：
+mtd write /tmp/uboot-qihoo-v6.bin /dev/mtd13
+mtd write /tmp/uboot-qihoo-v6.bin /dev/mtd14
+
+如果 mtd 命令不存在，使用 dd 备用写法：
+dd if=/tmp/uboot-qihoo-v6.bin of=/dev/mtd13
+dd if=/tmp/uboot-qihoo-v6.bin of=/dev/mtd14
+
+五、重启与后续
+所有写入命令执行完毕后，重启路由器：
+
+reboot
+
+重启后，由于分区表和 U-Boot 已变更，原厂系统可能无法进入。此时按住 Reset 键并重新上电，即可进入新刷入的 U-Boot Web 界面（通常 IP 为 192.168.1.1），从而刷入您心仪的 OpenWrt 固件。
+
+💡  进入 U-Boot 的按键时机因版本而异：  通常为上电后 3～5 秒内按住 Reset，具体请参考您所刷 U-Boot 的说明文档。
+
+💡 避坑指南
+断电警告   执行 mtd write / dd 写入过程中绝对不能断电！中途断电将直接变砖，需拆机使用编程器救砖。
+分区号勿照抄   mtd1 / mtd13 / mtd14 是示例，务必以 cat /proc/mtd 的实际输出为准。
+先备份再写入   步骤 3 的备份不要跳过，写错了还能用 dd 恢复原始数据。
+文件校验   拷贝到 U 盘后建议对比 MD5，确保文件未损坏。
+U 盘未挂载   若找不到 U 盘路径，先执行 ls /dev/sd* 确认设备存在，再手动 mount。
+
+本教程仅供学习交流，请在充分了解风险后自行决定是否操作，作者不对任何刷机风险负责。
