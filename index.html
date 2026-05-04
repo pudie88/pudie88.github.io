@@ -15,7 +15,114 @@
       :root {
         --base-background-color: #1a1a2e;
         --base-color: #eaeaea;
+      }<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦋 扑蝶的博客</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <style>
+    :root {
+      --theme-color: #e8914a;
+      --base-background-color: #1c1917;
+      --sidebar-background: #141210;
+      --base-color: #e7e0d8;
+      --base-line-height: 1.8;
+      --base-font-size: 15px;
+      --sidebar-width: 260px;
+      --code-theme-background: #242018;
+      --code-theme-text: #e7e0d8;
+    }
+
+    /* 标题渐变 */
+    .markdown-section h1,
+    .markdown-section h2 {
+      background: linear-gradient(135deg, #e8914a 0%, #c06a2a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* 侧边栏当前页高亮 */
+    .sidebar-nav li.active > a {
+      color: #e8914a;
+      font-weight: 600;
+    }
+
+    /* 引用块 */
+    .markdown-section blockquote {
+      border-left: 4px solid #e8914a;
+      background: #242018;
+      color: #b5aca0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* 表格 */
+    .markdown-section table tr:nth-child(2n) {
+      background: #242018;
+    }
+
+    /* 行内代码 */
+    .markdown-section p code,
+    .markdown-section li code {
+      background: #2e2920;
+      color: #e8914a;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    /* 滚动条 */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1c1917; }
+    ::-webkit-scrollbar-thumb { background: #3d3530; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #e8914a; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '🦋 扑蝶',
+      loadSidebar: true,
+      auto2top: true,
+      subMaxLevel: 3,
+      search: {
+        placeholder: '🔍 搜索文章...',
+        noData: '没有找到相关内容',
+        depth: 4
+      },
+      pagination: {
+        previousText: '← 上一篇',
+        nextText: '下一篇 →',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: '#7a6e67',
+        language: 'chinese'
       }
+    }
+  </script>
+
+  <!-- 核心 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <!-- 插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-count/dist/countable.min.js"></script>
+  <!-- 代码高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+</body>
+</html>
+
     }
     .markdown-section h1, .markdown-section h2 {
       background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
